@@ -12,6 +12,7 @@ import Aboutus from './frontend/Aboutus'
 import Footer from './frontend/Footer'
 import Cart from './frontend/Cart'
 import Payment from './frontend/PAyment'
+import PaymentSuccess from './frontend/PaymentSuccess'
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -28,6 +29,7 @@ function App() {
         <Route path='/prod' element={<Products />} />
         <Route path='/abt' element={<Aboutus />} />
         <Route path='/pay' element={<Payment></Payment>}></Route>
+        <Route path='/payment-success' element={<PaymentSuccess />} />
       </Routes>
     <Footer />
 </>

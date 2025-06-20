@@ -101,7 +101,6 @@ button:focus-visible {
 
 
 
-
 /* When hovering .Nav-head OR the span inside it */
 /* .Nav-head:hover,
 .Nav-head:hover span,
@@ -118,11 +117,13 @@ button:focus-visible {
 }
 
 .desc {
-  margin: auto;
-  width: 90%;
-  max-width: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 750px;
   text-align: center;
-  padding: 20px;
+  padding-bottom: 100px;
+  margin-left: 250px;
 }
 
 .abt {
@@ -191,90 +192,6 @@ button:focus-visible {
     transform: translateY(20px);
     animation: fadeSlideUp 1s ease-out 0.2s forwards;
 }
-.slogan-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 20px auto;
-  padding: 10px;
-  max-width: 90%;
-}
-
-.slogan-container hr {
-  width: 60px;
-  border-top: 2px solid white;
-  margin: 0;
-}
-
-.slogan-container h3 {
-  color: #efe5d7;
-  font-weight: bold;
-  font-size: clamp(1rem, 2.5vw, 1.5rem);
-  margin: 0;
-  text-align: center;
-}
-
-.aboutus-container {
-  padding: 20px;
-  color: white;
-  text-align: center;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.about-title {
-  font-size: 3rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.about-subtitle {
-  font-size: 1.5rem;
-  margin-bottom: 30px;
-  padding: 0 10px;
-}
-
-.about-desc {
-  font-size: 1rem;
-  padding: 0 15px;
-  line-height: 1.7;
-  margin-bottom: 20px;
-}
-
-.about-features {
-  font-size: 1rem;
-  text-align: center;
-  margin: 0 auto;
-  max-width: 700px;
-}
-
-.about-features p {
-  margin-bottom: 10px;
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-  .about-title {
-    font-size: 2rem;
-  }
-
-  .about-subtitle {
-    font-size: 1.2rem;
-  }
-
-  .about-desc, .about-features {
-    font-size: 0.95rem;
-    text-align: center;
-  }
-
-  .about-features {
-    text-align: center;
-  }
-}
-
-
 
 @keyframes fadeSlideUp {
     to {
@@ -308,107 +225,50 @@ button:focus-visible {
   border-color: rgb(141, 129, 129) ;
   border-style: solid;
   border-radius: 15%;
+
+  
 }
 
-/* PAYMENT PAGE */
-
-.pay {
-  display: flex;
-  justify-content: center;
-  margin-top: 50px;
-  padding: 40px;
-  background: linear-gradient(to right, #fff0f5, #f5f5f5);
-  border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+/* Navbar background and button styles */
+.navbar-translucent {
+  background: rgba(20, 20, 20, 0.45) !important;
+  backdrop-filter: blur(8px);
+  transition: background 0.3s, box-shadow 0.3s;
 }
 
-.inner-pay {
-  width: 500px;
-  padding: 30px;
-  background-color: white;
-  border-radius: 15px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+.navbar-solid {
+  background: rgba(20, 20, 20, 0.85) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  transition: background 0.3s, box-shadow 0.3s;
 }
 
-.inner-pay h2 {
-  text-align: center;
-  color: #D70040;
-  font-size: 32px;
-  font-family: 'Georgia', serif;
-  font-weight: bold;
-  margin-bottom: 30px;
-  border-bottom: 2px solid #D70040;
-  padding-bottom: 10px;
+.nav-btn-translucent {
+  color: #fff !important;
+  border-color: #fff !important;
+  background: rgba(40,40,40,0.15) !important;
+  transition: color 0.3s, background 0.3s, border-color 0.3s;
 }
 
-.inner-pay ul li {
-  background-color: #f8f8f8;
-  border: 1px solid #ddd;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 15px;
-  transition: all 0.3s ease-in-out;
+.nav-btn-translucent:hover {
+  background: rgba(40,40,40,0.35) !important;
+  color: #ffe082 !important;
+  border-color: #ffe082 !important;
 }
 
-.inner-pay ul li:hover {
-  transform: translateY(-2px);
-  background-color: #fff5f7;
-  border-color: #D70040;
+.nav-btn-solid {
+  color: #fff !important;
+  background: rgba(40,40,40,0.95) !important;
+  border-color: #fff !important;
+  transition: color 0.3s, background 0.3s, border-color 0.3s;
 }
 
-.pay-icons {
-  margin-top: 10px;
-  display: flex;
-  gap: 10px;
+.nav-btn-solid:hover {
+  background: #222 !important;
+  color: #ffe082 !important;
+  border-color: #ffe082 !important;
 }
 
-.pay-icons .MuiIconButton-root {
-  background-color: #140a0a;
-  border-radius: 8px;
-  transition: 0.2s ease;
+.logimg{
+  width: fit-content;
+  height: fit-content;
 }
-
-.pay-icons .MuiIconButton-root:hover {
-  background-color: #D70040;
-  color: white;
-}
-
-.inner-pay p {
-  font-size: 20px;
-  color: #000;
-  text-align: center;
-  font-weight: bold;
-  margin-top: 20px;
-}
-
-
-.pay-icons{
-  display: flex;
-  justify-content: space-around;
-}
-
-
-/*Responsiveness of payment page  */
-
-
-@media (max-width: 600px) {
-  .inner-pay {
-    width: 90%;
-    padding: 20px;
-  }
-
-  .inner-pay h2 {
-    font-size: 24px;
-  }
-
-  .inner-pay ul li {
-    font-size: 14px;
-    padding: 10px;
-  }
-
-  .pay-icons {
-    gap: 5px;
-  }
-}
-
-/* ////////////////// */
