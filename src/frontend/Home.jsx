@@ -70,7 +70,7 @@ const Home = () => {
                     <Grid size={{ xs: 6, md: 4 }}>
                         <Card sx={{ maxWidth: 345, backgroundColor: "Background", color: "White"}}>
                             <CardActionArea>
-                                <CardMedia component="img" height="200" image="https://img.freepik.com/free-photo/elegant-wedding-table-setting-with-floral-centerpiece-candles_23-2151978920.jpg" alt="Wedding pic" />
+                                <CardMedia component="img" height="200" image="/wedding.jpg" alt="Wedding pic" />
                                 <CardContent>
                                     <Typography gutterBottom variant="h5" component="div">WEDDING</Typography>
                                     <Typography variant="body2" sx={{ color: "#C0C0C0" }}>Celebrate your big day with elegance — our exquisite catering brings flavor, style, and care to every moment.</Typography>
@@ -82,7 +82,7 @@ const Home = () => {
                     <Grid size={{ xs: 6, md: 4 }}>
                         <Card sx={{ maxWidth: 345, backgroundColor: "Background", color: "White"}}>
                             <CardActionArea>
-                                <CardMedia component="img" height="200" image="https://img.freepik.com/free-photo/boxing-day-celebration-with-balloons_23-2151013721.jpg" alt="Birthday pic" />
+                                <CardMedia component="img" height="200" image="birthday.jpg" alt="Birthday pic" />
                                 <CardContent>
                                     <Typography gutterBottom variant="h5" component="div">BIRTHDAYS</Typography>
                                     <Typography variant="body2" sx={{ color: "#C0C0C0" }}>Make your special day unforgettable with our delicious food and personalized catering for all ages and party styles.</Typography>
@@ -94,7 +94,7 @@ const Home = () => {
                     <Grid size={{ xs: 6, md: 4 }}>
                         <Card sx={{ maxWidth: 345, backgroundColor: "Background", color: "White"}}>
                             <CardActionArea>
-                                <CardMedia component="img" height="200" image="https://img.freepik.com/free-photo/graduation-celebration-success-achievement-learning-combined-generated-by-ai_188544-24685.jpg" alt="Convocation pic" />
+                                <CardMedia component="img" height="200" image="/convocation.avif" alt="Convocation pic" />
                                 <CardContent>
                                     <Typography gutterBottom variant="h5" component="div">CONVOCATION</Typography>
                                     <Typography variant="body2" sx={{ color: "#C0C0C0" }}>Honor academic achievement with tasteful catering that adds pride and flavor to your celebration.</Typography>
@@ -106,7 +106,7 @@ const Home = () => {
                     <Grid size={{ xs: 6, md: 4 }}>
                         <Card sx={{ maxWidth: 345, backgroundColor: "Background", color: "White"}}>
                             <CardActionArea>
-                                <CardMedia component="img" height="200" image="https://img.freepik.com/free-photo/navratri-decoration-with-candles_23-2151193769.jpg" alt="Anniversary pic" />
+                                <CardMedia component="img" height="200" image="/anniversary.avif" alt="Anniversary pic" />
                                 <CardContent>
                                     <Typography gutterBottom variant="h5" component="div">ANNIVERSARIES</Typography>
                                     <Typography variant="body2" sx={{ color: "#C0C0C0" }}>Celebrate years of togetherness with elegant catering that adds warmth, flavor, and charm to your special day.</Typography>
@@ -118,7 +118,7 @@ const Home = () => {
                     <Grid size={{ xs: 6, md: 4 }}>
                         <Card sx={{ maxWidth: 345, backgroundColor: "Background", color: "White"}}>
                             <CardActionArea>
-                                <CardMedia component="img" height="200" image="https://img.freepik.com/free-photo/cinematic-happy-people-celebrating-american-independence-day-holiday_23-2151479257.jpg" alt="Reunion pic" />
+                                <CardMedia component="img" height="200" image="/reunion.avif" alt="Reunion pic" />
                                 <CardContent>
                                     <Typography gutterBottom variant="h5" component="div">REUNIONS</Typography>
                                     <Typography variant="body2" sx={{ color: "#C0C0C0" }}>Bring back memories and reconnect over delicious food tailored to make every moment unforgettable.</Typography>
@@ -130,7 +130,7 @@ const Home = () => {
                     <Grid size={{ xs: 6, md: 4 }}>
                         <Card sx={{ maxWidth: 345, backgroundColor: "Background", color: "White"}}>
                             <CardActionArea>
-                                <CardMedia component="img" height="200" image="https://img.freepik.com/free-photo/glowing-lanterns-festive-night-scene_23-2151983965.jpg" alt="Festival pic" />
+                                <CardMedia component="img" height="200" image="/festival.avif" alt="Festival pic" />
                                 <CardContent>
                                     <Typography gutterBottom variant="h5" component="div">FESTIVALS</Typography>
                                     <Typography variant="body2" sx={{ color: "#C0C0C0" }}>Add joy and tradition to your celebrations with festive flavors that bring everyone together.</Typography>
