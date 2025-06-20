@@ -101,6 +101,7 @@ button:focus-visible {
 
 
 
+
 /* When hovering .Nav-head OR the span inside it */
 /* .Nav-head:hover,
 .Nav-head:hover span,
@@ -117,13 +118,11 @@ button:focus-visible {
 }
 
 .desc {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 750px;
+  margin: auto;
+  width: 90%;
+  max-width: 800px;
   text-align: center;
-  padding-bottom: 100px;
-  margin-left: 250px;
+  padding: 20px;
 }
 
 .abt {
@@ -192,6 +191,90 @@ button:focus-visible {
     transform: translateY(20px);
     animation: fadeSlideUp 1s ease-out 0.2s forwards;
 }
+.slogan-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px auto;
+  padding: 10px;
+  max-width: 90%;
+}
+
+.slogan-container hr {
+  width: 60px;
+  border-top: 2px solid white;
+  margin: 0;
+}
+
+.slogan-container h3 {
+  color: #efe5d7;
+  font-weight: bold;
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  margin: 0;
+  text-align: center;
+}
+
+.aboutus-container {
+  padding: 20px;
+  color: white;
+  text-align: center;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.about-title {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.about-subtitle {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+  padding: 0 10px;
+}
+
+.about-desc {
+  font-size: 1rem;
+  padding: 0 15px;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.about-features {
+  font-size: 1rem;
+  text-align: center;
+  margin: 0 auto;
+  max-width: 700px;
+}
+
+.about-features p {
+  margin-bottom: 10px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .about-title {
+    font-size: 2rem;
+  }
+
+  .about-subtitle {
+    font-size: 1.2rem;
+  }
+
+  .about-desc, .about-features {
+    font-size: 0.95rem;
+    text-align: center;
+  }
+
+  .about-features {
+    text-align: center;
+  }
+}
+
+
 
 @keyframes fadeSlideUp {
     to {
