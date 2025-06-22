@@ -41,6 +41,7 @@ const Navbar = () => {
                         variant={scrolled ? 'contained' : 'outlined'}
                         color={scrolled ? 'primary' : 'inherit'}
                         className={scrolled ? 'nav-btn-solid' : 'nav-btn-translucent'}
+                        id='btn'
                         onClick={() => navigate('/')}
                     >
                         &nbsp;Home&nbsp;

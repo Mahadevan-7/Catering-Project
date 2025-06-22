@@ -14,6 +14,8 @@ import CardActions from '@mui/material/CardActions';
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
 import Cart from './Cart';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Badge from '@mui/material/Badge';
 
 const Products = () => {
     const [prod, setProd] = useState([]);
@@ -53,25 +55,24 @@ const Products = () => {
 
     return (
         <Box sx={{ flexGrow: 1, p: 3, pt: 10, backgroundColor: 'inherit', minHeight: '100vh' }}>
-            {cart.length > 0 && (
-                <Paper
-                    elevation={4}
+            {/* Always show floating cart button, but hide when cart is open */}
+            {!openCart && (
+                <Fab
+                    color="default"
+                    aria-label="cart"
                     sx={{
                         position: 'fixed',
-                        bottom: 16,
-                        right: 16,
-                        px: 3,
-                        py: 1,
-                        bgcolor: 'grey',
-                        zIndex: 1000,
-                        borderRadius: 2,
-                        fontWeight: 600,
-                        cursor: 'pointer'
+                        bottom: 24,
+                        right: 24,
+                        zIndex: 1200,
+                        boxShadow: 4
                     }}
-                    onClick={() => setOpenCart(!openCart)}
+                    onClick={() => setOpenCart(true)}
                 >
-                    🛒 {cart.reduce((acc, item) => acc + item.qty, 0)} items | ₹{total.toFixed(2)}
-                </Paper>
+                    <Badge badgeContent={cart.reduce((acc, item) => acc + item.qty, 0)} color="secondary" invisible={cart.length === 0}>
+                        <ShoppingCartIcon />
+                    </Badge>
+                </Fab>
             )}
 
             <Grid container spacing={4} justifyContent="center">
@@ -97,8 +98,8 @@ const Products = () => {
 
                             <CardActions sx={{ justifyContent: 'space-between', px: 2 }}>
                                 <div className='Add-cart-but' style={{marginLeft:"125px"}}>
-                                    <Fab size="small" color="success" aria-label="add" sx={{ boxShadow: 2 }} onClick={() => addToCart(val)}>
-                                        <AddIcon />
+                                    <Fab size="small" aria-label="add" sx={{ boxShadow: 2, backgroundColor: 'white', '&:hover': { backgroundColor: '#222' } }} onClick={() => addToCart(val)}>
+                                        <AddIcon sx={{ color: 'black','&:hover': { color:"#ffe082;" } }} />
                                     </Fab>
                                 </div>
 

@@ -1,5 +1,4 @@
 import { useState } from 'react'
-
 import './App.css'
 import Home from './frontend/Home'
 import Login from './frontend/Login'
@@ -10,7 +9,7 @@ import Products from './frontend/Products'
 import Aboutus from './frontend/Aboutus'
 import Footer from './frontend/Footer'
 import Cart from './frontend/Cart'
-import Payment from './frontend/PAyment'
+import Payment from './frontend/Payment'
 import PaymentSuccess from './frontend/PaymentSuccess'
 
 function App() {

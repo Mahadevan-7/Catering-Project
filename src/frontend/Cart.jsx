@@ -9,7 +9,7 @@ import Divider from '@mui/material/Divider';
 import { useNavigate } from 'react-router-dom'
 import Button from '@mui/material/Button';
 
-const Cart = ({ cart, setCart, total, setTotal }) => {
+const Cart = ({ cart, setCart, total, setTotal, onClose }) => {
     // Count quantities of each item
     const items = cart;
     const navigate = useNavigate()
@@ -39,39 +39,49 @@ const Cart = ({ cart, setCart, total, setTotal }) => {
             bottom: 16,
             right: 16,
             p: 2,
-            bgcolor: '#ffffff',
+            bgcolor: 'white',
             zIndex: 1000,
             borderRadius: 2,
             minWidth: 280,
             maxHeight: 400,
-            overflowY: 'auto'
+            overflowY: 'auto',
         }}>
-            <Typography variant="h6" gutterBottom>🛒 Cart</Typography>
-            {items.map((item) => (
-                <Box key={item.id} sx={{ mb: 1 }}>
-                    <Box display="flex" justifyContent="space-between" alignItems="center">
-                        <Typography variant="body2">
-                            {item.title.substring(0, 20)}... × {item.qty}
-                        </Typography>
-                        <IconButton size="small" onClick={() => removeItem(item.id)}>
-                            <RemoveIcon fontSize="small" />
-                        </IconButton>
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+                <Typography variant="h6" gutterBottom>🛒 Cart</Typography>
+                <IconButton size="small" onClick={onClose}><CloseIcon /></IconButton>
+            </Box>
+            {items.length === 0 ? (
+                <Typography color="text.secondary" align="center" sx={{ my: 4 }}>
+                    Your cart is empty.
+                </Typography>
+            ) : (
+                items.map((item) => (
+                    <Box key={item.id} sx={{ mb: 1 }}>
+                        <Box display="flex" justifyContent="space-between" alignItems="center">
+                            <Typography variant="body2">
+                                {item.title.substring(0, 20)}... × {item.qty}
+                            </Typography>
+                            <IconButton size="small" onClick={() => removeItem(item.id)}>
+                                <RemoveIcon fontSize="small" />
+                            </IconButton>
+                        </Box>
+                        <Divider />
                     </Box>
-                    <Divider />
-                </Box>
-            ))}
+                ))
+            )}
             <Typography sx={{ mt: 2, fontWeight: 600 }}>
                 Total: ₹{total.toFixed(2)}
             </Typography>
-            <Button
-                variant="contained"
-                color="success"
-                style={{ color: "white" }}
-                onClick={() => n(total, cart)}
-            >
-                Proceed to pay
-            </Button>
-
+            {items.length > 0 && (
+                <Button
+                    variant="contained"
+                    color="success"
+                    style={{ color: "white" }}
+                    onClick={() => n(total, cart)}
+                >
+                    Proceed to pay
+                </Button>
+            )}
         </Paper>
     );
 };

@@ -1,4 +1,4 @@
-import { Button, Grid, IconButton } from '@mui/material';
+import { Button, Grid, IconButton, Card, CardContent, Typography, Divider, Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
@@ -55,53 +55,80 @@ const Payment = (props) => {
     const navigate = useNavigate();
 
     return (
-        <div>
-            <h1>Payment</h1>
-
-            <div className='pay'>
-                {/* <Grid container spacing={2}>
-                    <Grid size={6}> */}
-                <div className='inner-pay'>
-                    <h2 style={{ color: "black", marginBottom: "50px" }}>CART</h2>
-                    <ul style={{ color: "black", listStyle: "none", padding: 0 }}>
-                        {cartItems.map((item, index) => (
-                            <li key={index} style={{
-                                color: "white",
-                                marginBottom: "15px",
-                                padding: "10px",
-                                background: "black",
-                                borderRadius: "10px",
-                                boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
-                            }}>
-                                <strong>{item.title}</strong><br />
-                                ₹{item.price} × {item.qty} = ₹{(item.qty * item.price).toFixed(2)}
-                                <div className='pay-icons' style={{ marginTop: "8px"}}>
-                                    <IconButton size="medium" sx={{color:"white"}} onClick={() => handleRemove(index)}><RemoveIcon /></IconButton>
-                                    <IconButton size="medium" sx={{color:"white"}} onClick={() => handleAdd(index)}><AddIcon /></IconButton>
-                                    <IconButton size="medium" onClick={() => handleDelete(index)}><DeleteIcon color="error" /></IconButton>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                    <p style={{ color: "black" }}>Total: ₹{total.toFixed(2)}</p>
-                    <Button sx={{ marginTop: "200px", marginBottom: "20px" }} variant='contained' color='info'>Pay</Button>
-                </div>
-                {/* </Grid>
-                </Grid> */}
-            </div>
-
-            {/* <h2>Items:</h2>
-            <ul>
-                {cart.map((item, index) => (
-                    <li key={index}>
-                        {item.title} × {item.qty} @ ₹{item.price} = ₹{(item.qty * item.price).toFixed(2)}
-                    </li>
-                ))}
-            </ul>
-            <p>Total: ₹{t.toFixed(2)}</p>
-
-            <Button variant='contained' color='info'>Pay</Button> */}
-        </div>
+        <Box
+            sx={{
+                minHeight: '70vh',
+                py: 6,
+                backgroundColor: 'inherit'
+            }}
+        >
+            <Grid container justifyContent="center" alignItems="flex-start">
+                <Grid item xs={12} md={7} lg={5}>
+                    <Card sx={{ borderRadius: 4, boxShadow: 6, p: 3 }}>
+                        <CardContent>
+                            <Typography variant="h4" align="center" gutterBottom color="primary" sx={{ fontWeight: 700 }}>
+                                Payment
+                            </Typography>
+                            <Divider sx={{ mb: 3 }} />
+                            <Typography variant="h6" sx={{ color: 'text.secondary', mb: 2, fontWeight: 600 }}>
+                                Cart Items
+                            </Typography>
+                            <Box component="ul" sx={{ listStyle: 'none', p: 0, m: 0 }}>
+                                {cartItems.length === 0 ? (
+                                    <Typography color="text.secondary" align="center" sx={{ my: 4 }}>
+                                        Your cart is empty.
+                                    </Typography>
+                                ) : (
+                                    cartItems.map((item, index) => (
+                                        <Box key={index} component="li" sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-between',
+                                            mb: 2,
+                                            p: 2,
+                                            background: '#f0f4f8',
+                                            borderRadius: 2,
+                                            boxShadow: '0 1px 4px rgba(0,0,0,0.04)'
+                                        }}>
+                                            <Box>
+                                                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{item.title}</Typography>
+                                                
+                                            </Box>
+                                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                                <IconButton className='ic' size="small" color="primary" onClick={() => handleRemove(index)}><RemoveIcon /></IconButton>
+                                                <Typography>{item.qty}</Typography>
+                                                <IconButton className='ic' size="small" color="primary" onClick={() => handleAdd(index)}><AddIcon /></IconButton>
+                                                <IconButton className='ic' size="small" onClick={() => handleDelete(index)}><DeleteIcon color="error" /></IconButton>
+                                            </Box>
+                                        </Box>
+                                    ))
+                                )}
+                            </Box>
+                            <Divider sx={{ my: 3 }} />
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                                <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                                    Total
+                                </Typography>
+                                <Typography variant="h5" color="primary" sx={{ fontWeight: 700 }}>
+                                    ₹{total.toFixed(2)}
+                                </Typography>
+                            </Box>
+                            <Button
+                                variant='contained'
+                                color='primary'
+                                fullWidth
+                                size="large"
+                                sx={{ mt: 3, py: 1.5, fontWeight: 600, fontSize: '1.1rem', borderRadius: 2 }}
+                                disabled={cartItems.length === 0}
+                                href='/payment-success'
+                            >
+                                Pay Now
+                            </Button>
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Grid>
+        </Box>
     );
 };
 
