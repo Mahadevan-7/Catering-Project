@@ -74,6 +74,15 @@ const Navbar = () => {
                         &nbsp;About us&nbsp;
                     </Button>
                     &nbsp;&nbsp;&nbsp;
+                    <Button 
+                        variant={scrolled ? 'contained' : 'outlined'}
+                        color={scrolled ? 'primary' : 'inherit'}
+                        className={scrolled ? 'nav-btn-solid' : 'nav-btn-translucent'}
+                        onClick={() => navigate('/dash')}
+                    >
+                        &nbsp;Dashboard&nbsp;
+                    </Button>
+                    &nbsp;&nbsp;&nbsp;
 
                     {/* <TextField
                         variant="outlined"

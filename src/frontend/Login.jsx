@@ -4,29 +4,29 @@ import GoogleIcon from '@mui/icons-material/Google';
 
 const Login = () => {
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
+    <div id='glass' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
       <Card sx={{ width: 700, height: 400, borderRadius: 4, boxShadow: 6, display: 'flex', flexDirection: 'row', overflow: 'hidden' }}>
-        <Box sx={{ width: '45%', height: '100%', background: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Box id='glass' sx={{ width: '45%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <img src="/signin.jpg" alt="Sign in visual" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </Box>
         <Box sx={{ width: '55%', p: 4, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <Typography variant="h5" fontWeight={700} mb={2} align="center" sx={{ fontSize: '1.6rem' }}>Sign In</Typography>
           <form>
             <Grid container spacing={1.5} direction="column" alignItems="center" justifyContent="center">
-              <Grid item xs={12} sx={{ width: '100%' }}>
+              <Grid item xs={12} sx={{ width: '60%' }}>
                 <TextField label="Full Name" variant="outlined" fullWidth required size="small" InputLabelProps={{ style: { fontSize: '0.95rem' } }} inputProps={{ style: { fontSize: '0.95rem' } }} />
               </Grid>
-              <Grid item xs={12} sx={{ width: '100%' }}>
+              <Grid item xs={12} sx={{ width: '60%' }}>
                 <TextField label="Password" type="password" variant="outlined" fullWidth required size="small" InputLabelProps={{ style: { fontSize: '0.95rem' } }} inputProps={{ style: { fontSize: '0.95rem' } }} />
               </Grid>
-              <Grid item xs={12} sx={{ width: '100%' }}>
+              <Grid item xs={12} sx={{ width: '60%' }}>
                 <Button variant="contained" color="primary" fullWidth sx={{ py: 1, fontWeight: 700, fontSize: '1rem', mt: 1 }}>
                   Sign In
                 </Button>
               </Grid>
-              <Grid item xs={12} sx={{ width: '100%' }}>
+              <Grid item xs={12} sx={{ width: '70%' }}>
                 <Divider sx={{ my: 1.5, fontSize: '0.95rem' }}>or</Divider>
-                <Button variant="outlined" color="primary" fullWidth startIcon={<GoogleIcon />} sx={{ py: 1, fontWeight: 700, fontSize: '1rem' }}>
+                <Button variant="outlined" color="primary" fullWidth startIcon={<GoogleIcon />} sx={{ py: 1, fontWeight: 700, fontSize: '0.85rem' }}>
                   Sign in with Google
                 </Button>
               </Grid>
