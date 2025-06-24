@@ -96,7 +96,7 @@ button:focus-visible {
 }
 
 .Nav-head {
-  color: white;
+  color: #ffd54f;
 }
 
 
@@ -145,7 +145,7 @@ button:focus-visible {
   margin-left: 30px;
 }
 
-.disup button:hover{
+.disup button:hover {
   color: white;
   transform: scale(1.06);
 }
@@ -162,7 +162,7 @@ button:focus-visible {
   margin-left: 70px;
 }
 
-.disin button:hover{
+.disin button:hover {
   color: white;
   transform: scale(1.06);
 }
@@ -179,7 +179,7 @@ button:focus-visible {
   
 } */
 
-.service{
+.service {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
@@ -188,22 +188,22 @@ button:focus-visible {
 
 
 .slogan-animate {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeSlideUp 1s ease-out 0.2s forwards;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeSlideUp 1s ease-out 0.2s forwards;
 }
 
 @keyframes fadeSlideUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 
 /* ////////// */
 
-.Add-cart-but button:hover{
+.Add-cart-but button:hover {
   color: #ffe082;
   transition: .3s;
 }
@@ -216,17 +216,17 @@ button:focus-visible {
   border: 2px;
   border-radius: 8%;padding-top: 100px;
 } */
-.inner-pay{
+.inner-pay {
   z-index: 10000;
   width: 500px;
   height: 80%;
   border: 2px;
-  background-color:whitesmoke;
-  border-color: rgb(141, 129, 129) ;
+  background-color: whitesmoke;
+  border-color: rgb(141, 129, 129);
   border-style: solid;
   border-radius: 15%;
 
-  
+
 }
 
 /* Navbar background and button styles */
@@ -238,26 +238,28 @@ button:focus-visible {
 
 .navbar-solid {
   background: rgba(20, 20, 20, 0.85) !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   transition: background 0.3s, box-shadow 0.3s;
 }
 
 .nav-btn-translucent {
   color: #fff !important;
   border-color: #fff !important;
-  background: rgba(40,40,40,0.15) !important;
+  background: rgba(40, 40, 40, 0.15) !important;
   transition: color 0.3s, background 0.3s, border-color 0.3s;
 }
 
 .nav-btn-translucent:hover {
-  background: rgba(40,40,40,0.35) !important;
+  background: rgba(40, 40, 40, 0.35) !important;
   color: #ffe082 !important;
   border-color: #ffe082 !important;
 }
 
+
+
 .nav-btn-solid {
   color: #fff !important;
-  background: rgba(40,40,40,0.95) !important;
+  background: rgba(40, 40, 40, 0.95) !important;
   border-color: #fff !important;
   transition: color 0.3s, background 0.3s, border-color 0.3s;
 }
@@ -268,20 +270,35 @@ button:focus-visible {
   border-color: #ffe082 !important;
 }
 
-.logimg{
+.nav-btn-menu {
+  background-color: #ffd54f !important;
+  color: black !important;
+  border-color: #ffd54f !important;
+  transition: all 0.3s ease !important;
+}
+
+.nav-btn-menu:hover {
+  background-color: #ffd54f !important;
+  color: black !important;
+  border-color: #ffd54f !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 4px 12px rgba(255, 224, 130, 0.3) !important;
+}
+
+.logimg {
   width: fit-content;
   height: fit-content;
 }
 
 .ic:hover {
-  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3), 0 1.5px 4px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3), 0 1.5px 4px rgba(0, 0, 0, 0.15);
   border-radius: 50%;
   transition: box-shadow 0.2s;
   color: #1a1a1a;
   transition-duration: 300ms;
 }
 
-.con{
+.con {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -298,3 +315,26 @@ button:focus-visible {
   padding: 20px;
   margin: 20px;
 }
+
+/* Disable hover transformations on Material-UI CardActionArea */
+.MuiCardActionArea-root {
+  transition: none !important;
+  transform: none !important;
+}
+
+.MuiCardActionArea-root:hover {
+  transform: none !important;
+  transition: none !important;
+}
+
+.MuiCard-root {
+  transition: none !important;
+  transform: none !important;
+}
+
+.MuiCard-root:hover {
+  transform: none !important;
+  transition: none !important;
+}
+
+

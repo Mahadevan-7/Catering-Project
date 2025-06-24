@@ -83,6 +83,16 @@ const Navbar = () => {
                         &nbsp;Dashboard&nbsp;
                     </Button>
                     &nbsp;&nbsp;&nbsp;
+                    <Button 
+                        variant='contained'
+                        color='#ffe082'
+                        className= 'nav-btn-menu' 
+                        href='public\_Food Menu.pdf'
+                        target="_blank"
+                    >
+                        &nbsp;View Menu&nbsp;
+                    </Button>
+                    &nbsp;&nbsp;&nbsp;
 
                     {/* <TextField
                         variant="outlined"

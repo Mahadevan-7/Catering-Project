@@ -21,16 +21,16 @@ const Home = () => {
                     alignItems: "center",
                     justifyContent: "center",
                 }}>
-                    <hr style={{ width: "60px", borderTop: "2px solid white", marginRight: "10px" }} />
+                    <hr style={{ width: "60px", borderTop: "2px solid #ffd54f", marginRight: "10px" }} />
                     <h3 style={{
-                        color: "#efe5d7",
+                        color: "#ffd54f",
                         fontWeight: "bold",
                         margin: "0",
                         fontSize: "20px"
                     }}>
                         Serving Elegance, Crafting Memories
                     </h3>
-                    <hr style={{ width: "60px", borderTop: "2px solid white", marginLeft: "10px" }} />
+                    <hr style={{ width: "60px", borderTop: "2px solid #ffd54f", marginLeft: "10px" }} />
                 </div>
             </div>
 
@@ -54,7 +54,7 @@ const Home = () => {
                     justifyContent: "center",
                     marginBottom: "70px"
                 }}>
-                    <hr style={{ width: "60px", borderTop: "2px solid White", marginRight: "10px" }} />
+                    <hr style={{ width: "60px", borderTop: "2px solid #ffd54f", marginRight: "10px" }} />
                     <h3 style={{
                         color: "white",
                         fontWeight: "bold",
@@ -63,7 +63,7 @@ const Home = () => {
                     }}>
                         Our Services
                     </h3>
-                    <hr style={{ width: "60px", borderTop: "2px solid White", marginLeft: "10px" }} />
+                    <hr style={{ width: "60px", borderTop: "2px solid #ffd54f", marginLeft: "10px" }} />
 
                 </div>
                 <Grid sx={{ marginLeft: "50px" }} container spacing={4}>

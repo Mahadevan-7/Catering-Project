@@ -34,8 +34,8 @@ const Dashboard = () => {
                             <Tab label="Products" value="2" sx={{ minHeight: 44 }} />
                         </TabList>
                     </Box>
-                    <TabPanel value="1" sx={{ flex: 1 }}>Item One</TabPanel>
-                    <TabPanel value="2" sx={{ flex: 1 }}>Item Two</TabPanel>
+                    <TabPanel value="1" sx={{ flex: 1, color: 'black' }}>Item One</TabPanel>
+                    <TabPanel value="2" sx={{ flex: 1, color: 'black' }}>Item Two</TabPanel>
                 </TabContext>
             </Box>
         </div>
