@@ -52,7 +52,7 @@ const Login = () => {
               </Grid>
               <Grid item xs={12} sx={{ width: '100%' }}>
                 <Typography align="center" mt={1.5} sx={{ fontSize: '0.95rem' }}>
-                  New User? <a href="/reg">Sign up</a>
+                  New User? <a href="/reg" className='a-link' >Sign up</a>
                 </Typography>
               </Grid>
             </Grid>

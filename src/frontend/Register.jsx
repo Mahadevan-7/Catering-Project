@@ -65,7 +65,7 @@ const Register = () => {
               </Grid>
               <Grid item xs={12} sx={{ width: '100%' }}>
                 <Typography align="center" mt={1.5} sx={{ fontSize: '0.95rem' }}>
-                  Already have an account? <a href="/log">Sign in</a>
+                  Already have an account? <a className='a-link' href="/log">Sign in</a>
                 </Typography>
               </Grid>
             </Grid>

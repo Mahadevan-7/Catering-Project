@@ -113,7 +113,7 @@ button:focus-visible {
 
 .Nav-head:hover span,
 .Nav-head span:hover {
-  color: white;
+  color: silver;
   transition: .7s;
 }
 
@@ -339,12 +339,16 @@ button:focus-visible {
 }
 
 .google-signin-button:hover {
-  background-color: #4285F4; /* Example background color on hover */
-  border-color: #4285F4; /* Example border color on hover */
-  color: #4285F4; /* Example text color on hover */
-  transform: scale(.89);
+  background-color: #4285F4;
+  border-color: #4285F4; 
+  color: #4285F4; 
+  transform: scale(.94);
 }
 
 .signup-button:hover {
-  transform: scale(.89);
+  transform: scale(.94);
+}
+
+.a-link:hover {
+  color: #4285F4;
 }
