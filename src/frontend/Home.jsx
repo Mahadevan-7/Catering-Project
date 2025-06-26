@@ -38,7 +38,16 @@ const Home = () => {
                 <h3>"Where every event begins with elegance and ends with satisfaction."</h3>
             </div>
 
-            <div className='desc' style={{ paddingBottom: "20px" }}>
+            <div className='desc' style={{ 
+                paddingBottom: "20px",
+                maxWidth: "1200px",
+                margin: "0 auto",
+                padding: "0 20px",
+                textAlign: "center",
+                fontSize: "clamp(1rem, 2vw, 1.2rem)",
+                lineHeight: "1.6",
+                color: "white"
+            }}>
                 <p>At Silver Spoon Catering, we specialize in transforming meals into memorable experiences. Whether you're planning a luxurious wedding, a corporate gathering, or a private celebration, our team is dedicated to delivering impeccable service and gourmet cuisine tailored to your vision.
                     With a passion for detail, fresh ingredients, and flawless presentation, we go beyond just catering — we curate culinary moments that delight every guest. From customized menus to seamless event coordination, Silver Spoon Catering ensures your occasion is not only successful, but unforgettable.
                     Let us serve you excellence — one silver spoon at a time.</p>
