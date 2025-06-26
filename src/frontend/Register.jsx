@@ -53,13 +53,13 @@ const Register = () => {
                 </Box>
               </Grid>
               <Grid item xs={12} sx={{ width: '100%' }}>
-                <Button variant="contained" color="primary" fullWidth sx={{ py: 1, fontWeight: 700, fontSize: '1rem', mt: 1 }}>
+                <Button variant="contained" color="primary" fullWidth className='signup-button' sx={{ py: 1, fontWeight: 700, fontSize: '1rem', mt: 1 }}>
                   Sign Up
                 </Button>
               </Grid>
               <Grid item xs={12} sx={{ width: '100%' }}>
                 <Divider sx={{ my: 1.5, fontSize: '0.95rem' }}>or</Divider>
-                <Button variant="outlined" color="primary" fullWidth startIcon={<GoogleIcon />} sx={{ py: 1, fontWeight: 700, fontSize: '1rem' }}>
+                <Button variant="outlined" color="primary" fullWidth startIcon={<GoogleIcon />} className="google-signin-button" sx={{ py: 1, fontWeight: 700, fontSize: '1rem' }}>
                   Sign up with Google
                 </Button>
               </Grid>

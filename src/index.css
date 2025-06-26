@@ -66,6 +66,7 @@ button:hover {
   font-weight: 100;
 }
 
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -337,4 +338,13 @@ button:focus-visible {
   transition: none !important;
 }
 
+.google-signin-button:hover {
+  background-color: #4285F4; /* Example background color on hover */
+  border-color: #4285F4; /* Example border color on hover */
+  color: #4285F4; /* Example text color on hover */
+  transform: scale(.89);
+}
 
+.signup-button:hover {
+  transform: scale(.89);
+}
