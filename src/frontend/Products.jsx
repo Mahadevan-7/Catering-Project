@@ -24,7 +24,7 @@ const Products = () => {
     const [openCart, setOpenCart] = useState(false);
 
     useEffect(() => {
-        axios.get("http://localhost:3000/products")
+        axios.get("http://localhost:3001/products")
             .then(res => setProd(res.data));
     }, []);
 
