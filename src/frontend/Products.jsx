@@ -24,7 +24,7 @@ const Products = () => {
     const [openCart, setOpenCart] = useState(false);
 
     useEffect(() => {
-        axios.get("https://fakestoreapi.com/products")
+        axios.get("http://localhost:3000/products")
             .then(res => setProd(res.data));
     }, []);
 
@@ -86,7 +86,7 @@ const Products = () => {
                             />
                             <CardContent>
                                 <Typography gutterBottom variant="h6" component="div" color="White">
-                                    Hotel: {val.title.substring(0, 20)}...
+                                     {val.title.substring(0, 20)}...
                                 </Typography>
                                 <Typography variant="body2" color="White" sx={{ mb: 1.5 }}>
                                     {val.description.substring(0, 100)}...

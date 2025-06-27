@@ -1,0 +1,39 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "title": "Gulab Jamun Box",
+      "description": "Soft and juicy gulab jamuns packed in an elegant gift box. Ideal for weddings and celebrations.",
+      "image": "https://cf0316.s3.amazonaws.com/cookificom/menu/12780/slide/45b2cf.jpg",
+      "price": 299.00
+    },
+    {
+      "id": 2,
+      "title": "Laddu Combo Pack",
+      "description": "A festive combo of Besan, Motichoor, and Boondi laddus. A perfect return gift for guests.",
+      "image": "https://i0.wp.com/foodonfarmpickles.com/wp-content/uploads/2025/01/Laddu-gift-box-4-scaled.jpg?fit=2560%2C1819&ssl=1",
+      "price": 299.00
+    },
+    {
+      "id": 3,
+      "title": "Dry Fruit Barfi Tray",
+      "description": "Premium dry fruit barfis with almonds, cashews, and pistachios, beautifully arranged.",
+      "image": "https://www.shreemithai.com/cdn/shop/products/kaju-dry-fruit-burfi-773541.jpg?v=1707819886",
+      "price": 399.00
+    },
+    {
+      "id": 4,
+      "title": "Kaju Katli Gift Pack",
+      "description": "Diamond-cut cashew sweets made with pure ghee and nuts. Wedding favorite.",
+      "image": "https://bansiwala.co.in/cdn/shop/products/WhatsAppImage2021-02-25at7.11.55PM.jpg?v=1646302159",
+      "price": 299.00
+    },
+    {
+      "id": 5,
+      "title": "Celebration Sweets Hamper",
+      "description": "A grand hamper with Rasgulla, Soan Papdi, Mysore Pak and Peda – ideal for gifting.",
+      "image": "https://i.pinimg.com/736x/a7/0f/dc/a70fdcb7d7285770adbbfbbe08983483.jpg",
+      "price": 899.00
+    }
+  ]
+}
