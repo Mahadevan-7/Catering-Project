@@ -80,7 +80,7 @@ const Products = () => {
             <Grid container spacing={4} justifyContent="center">
                 {prod.map((val, index) => (
                     <Grid item key={index}>
-                        <Card sx={{ maxWidth: 320, minHeight: 440, position: 'relative', borderRadius: 4, boxShadow: 6, backgroundColor: 'AppWorkspace' }}>
+                        <Card className='prod-card' sx={{ maxWidth: 320, minHeight: 440, position: 'relative', borderRadius: 4, boxShadow: 6, backgroundColor: 'AppWorkspace' }}>
                             <CardMedia
                                 sx={{ height: 180, objectFit: 'contain', p: 2 }}
                                 image={val.image}
