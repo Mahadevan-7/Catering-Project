@@ -1,10 +1,14 @@
-import { AppBar, Toolbar, Button, Box } from '@mui/material';
+import { AppBar, Toolbar, Button, Box, IconButton, Drawer, List, ListItem, ListItemText, useTheme, useMediaQuery } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const Navbar = () => {
     const navigate = useNavigate();
     const [scrolled, setScrolled] = useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     useEffect(() => {
         const handleScroll = () => {
@@ -18,6 +22,58 @@ const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
+    };
+
+    const handleNavigation = (path) => {
+        navigate(path);
+        if (isMobile) {
+            setMobileOpen(false);
+        }
+    };
+
+    const navItems = [
+        { text: 'Home', path: '/' },
+        { text: 'Register/Login', path: '/log' },
+        { text: 'Products', path: '/prod' },
+        { text: 'About us', path: '/abt' },
+        { text: 'Dashboard', path: '/dash' }
+    ];
+
+    const drawer = (
+        <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+            <List>
+                {navItems.map((item) => (
+                    <ListItem key={item.text} onClick={() => handleNavigation(item.path)}>
+                        <ListItemText 
+                            primary={item.text} 
+                            sx={{ 
+                                color: 'white',
+                                '& .MuiListItemText-primary': {
+                                    fontSize: '1.1rem',
+                                    fontWeight: 500
+                                }
+                            }}
+                        />
+                    </ListItem>
+                ))}
+                <ListItem>
+                    <Button
+                        variant='contained'
+                        color='#ffe082'
+                        className='nav-btn-menu'
+                        href='public/_Food Menu.pdf'
+                        target="_blank"
+                        sx={{ width: '100%' }}
+                    >
+                        View Menu
+                    </Button>
+                </ListItem>
+            </List>
+        </Box>
+    );
+
     return (
         <div>
             <AppBar
@@ -30,7 +86,9 @@ const Navbar = () => {
                         <h2><span>Silver Spoon</span> Catering</h2>
                     </div>
                     <Box sx={{ flexGrow: 1 }} />
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                    
+                    {/* Desktop Navigation */}
+                    <Box sx={{ display: { xs: 'none', md: 'flex' }, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                         <Button
                             variant={scrolled ? 'contained' : 'outlined'}
                             color={scrolled ? 'primary' : 'inherit'}
@@ -87,8 +145,41 @@ const Navbar = () => {
                             &nbsp;View Menu&nbsp;
                         </Button>
                     </Box>
+
+                    {/* Mobile Hamburger Menu */}
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={handleDrawerToggle}
+                        sx={{ display: { xs: 'block', md: 'none' } }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
                 </Toolbar>
             </AppBar>
+
+            {/* Mobile Drawer */}
+            <Drawer
+                variant="temporary"
+                open={mobileOpen}
+                onClose={handleDrawerToggle}
+                ModalProps={{
+                    keepMounted: true, // Better open performance on mobile.
+                }}
+                sx={{
+                    display: { xs: 'block', md: 'none' },
+                    '& .MuiDrawer-paper': { 
+                        boxSizing: 'border-box', 
+                        width: 240,
+                        backgroundColor: 'rgba(20, 20, 20, 0.95)',
+                        backdropFilter: 'blur(8px)'
+                    },
+                }}
+            >
+                {drawer}
+            </Drawer>
+
             <div style={{ height: 64 }} /> {/* Spacer for fixed navbar */}
         </div>
     );
