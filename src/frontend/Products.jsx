@@ -60,6 +60,8 @@ const Products = () => {
                 <Fab
                     color="default"
                     aria-label="cart"
+                    className="floating-cart-button"
+                    title='Cart'
                     sx={{
                         position: 'fixed',
                         bottom: 24,
@@ -69,7 +71,7 @@ const Products = () => {
                     }}
                     onClick={() => setOpenCart(true)}
                 >
-                    <Badge badgeContent={cart.reduce((acc, item) => acc + item.qty, 0)} color="secondary" invisible={cart.length === 0}>
+                    <Badge badgeContent={cart.reduce((acc, item) => acc + item.qty, 0)} color="secondary" invisible={cart.length === 0} className="cart-badge">
                         <ShoppingCartIcon />
                     </Badge>
                 </Fab>
@@ -98,7 +100,7 @@ const Products = () => {
 
                             <CardActions sx={{ justifyContent: 'space-between', px: 2 }}>
                                 <div className='Add-cart-but' style={{marginLeft:"125px"}}>
-                                    <Fab size="small" aria-label="add" sx={{ boxShadow: 2, backgroundColor: 'white', '&:hover': { backgroundColor: '#222' } }} onClick={() => addToCart(val)}>
+                                    <Fab size="small" aria-label="add" title='Add to Cart' sx={{ boxShadow: 2, backgroundColor: 'white', '&:hover': { backgroundColor: '#222' } }} onClick={() => addToCart(val)}>
                                         <AddIcon sx={{ color: 'black','&:hover': { color:"#ffe082;" } }} />
                                     </Fab>
                                 </div>

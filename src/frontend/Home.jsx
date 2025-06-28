@@ -5,10 +5,12 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import CardActionArea from '@mui/material/CardActionArea';
 import { Grid } from '@mui/material';
+import WhatsAppContact from './WhatsAppContact';
 
 const Home = () => {
     return (
         <div>
+            <WhatsAppContact />
             <div className='Banner' style={{ marginTop: "50px", textAlign: "center" }}>
                 <h1 style={{ fontSize: "60px", fontWeight: "bolder", color: "white", marginBottom: "10px" }}>
                     Silver Spoon Catering

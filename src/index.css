@@ -209,6 +209,27 @@ button:focus-visible {
   transition: .3s;
 }
 
+/* Enhanced Cart Button Hover Effects */
+.floating-cart-button {
+  transition: all 0.3s ease !important;
+}
+
+.floating-cart-button:hover {
+  transform: scale(1.1) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3) !important;
+  background-color: #ffffff !important;
+}
+
+.floating-cart-button:hover .MuiSvgIcon-root {
+  color: #1a1a1a !important;
+}
+
+/* Cart Badge Hover Effect */
+.cart-badge:hover {
+  transform: scale(1.05) !important;
+  transition: transform 0.2s ease !important;
+}
+
 /* .pay{
   width: 800px;
   height: 600px;

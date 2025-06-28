@@ -5,6 +5,7 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import './Dashboard.css';
+import WhatsAppContact from './WhatsAppContact';
 
 const Dashboard = () => {
     const [value, setValue] = React.useState('1');
@@ -15,6 +16,7 @@ const Dashboard = () => {
 
     return (
         <div className='dashboard-container'>
+            <WhatsAppContact />
             <div className='glass-morphism-card'>
                 <Box sx={{ width: '100%', typography: 'body1', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', p: 0 }}>
                     <TabContext value={value}>

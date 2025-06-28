@@ -1,8 +1,10 @@
 import React from 'react';
+import WhatsAppContact from './WhatsAppContact';
 
 const Aboutus = () => {
     return (
         <div className="aboutus-container">
+            <WhatsAppContact />
             <h1 className='Banner about-title'>About Us</h1>
 
             <h3 className='Banner about-subtitle'>
