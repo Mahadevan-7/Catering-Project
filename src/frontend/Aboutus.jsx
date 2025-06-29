@@ -5,7 +5,7 @@ const Aboutus = () => {
     return (
         <div className="aboutus-container">
             <WhatsAppContact />
-            <h1 className='Banner about-title'>About Us</h1>
+            <h1 className='Banner about-title' style={{color:"#ffd54f"}}>About Us</h1>
 
             <h3 className='Banner about-subtitle'>
                 <b>Welcome to Silver Spoon Catering</b> — where taste meets elegance!

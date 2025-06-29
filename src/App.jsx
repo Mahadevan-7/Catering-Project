@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Register from './frontend/Register'
 import Products from './frontend/Products'
 import Aboutus from './frontend/Aboutus'
+import Contact from './frontend/Contact'
 import Footer from './frontend/Footer'
 import Cart from './frontend/Cart'
 import Payment from './frontend/Payment'
@@ -34,6 +35,7 @@ function App() {
         <Route path='/reg' element={<Register />} />
         <Route path='/prod' element={<Products />} />
         <Route path='/abt' element={<Aboutus />} />
+        <Route path='/contact' element={<Contact />} />
         <Route path='/pay' element={<Payment></Payment>}></Route>
         <Route path='/payment-success' element={<PaymentSuccess />} />
         <Route path='/dash' element={<Dashboard />} />

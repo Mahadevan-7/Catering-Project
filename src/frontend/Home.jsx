@@ -67,7 +67,7 @@ const Home = () => {
                 }}>
                     <hr style={{ width: "60px", borderTop: "2px solid #ffd54f", marginRight: "10px" }} />
                     <h3 style={{
-                        color: "white",
+                        color: "#ffd54f",
                         fontWeight: "bold",
                         margin: "0",
                         fontSize: "50px"

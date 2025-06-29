@@ -38,6 +38,7 @@ const Navbar = () => {
         { text: 'Register/Login', path: '/log' },
         { text: 'Products', path: '/prod' },
         { text: 'About us', path: '/abt' },
+        { text: 'Contact', path: '/contact' },
         { text: 'Dashboard', path: '/dash' }
     ];
 
@@ -124,6 +125,15 @@ const Navbar = () => {
                             sx={{ margin: 1 }}
                         >
                             &nbsp;About us&nbsp;
+                        </Button>
+                        <Button
+                            variant={scrolled ? 'contained' : 'outlined'}
+                            color={scrolled ? 'primary' : 'inherit'}
+                            className={scrolled ? 'nav-btn-solid' : 'nav-btn-translucent'}
+                            onClick={() => navigate('/contact')}
+                            sx={{ margin: 1 }}
+                        >
+                            &nbsp;Contact Us&nbsp;
                         </Button>
                         <Button
                             variant={scrolled ? 'contained' : 'outlined'}
