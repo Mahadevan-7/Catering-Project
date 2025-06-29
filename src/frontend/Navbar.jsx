@@ -126,24 +126,7 @@ const Navbar = () => {
                         >
                             &nbsp;About us&nbsp;
                         </Button>
-                        <Button
-                            variant={scrolled ? 'contained' : 'outlined'}
-                            color={scrolled ? 'primary' : 'inherit'}
-                            className={scrolled ? 'nav-btn-solid' : 'nav-btn-translucent'}
-                            onClick={() => navigate('/contact')}
-                            sx={{ margin: 1 }}
-                        >
-                            &nbsp;Contact Us&nbsp;
-                        </Button>
-                        <Button
-                            variant={scrolled ? 'contained' : 'outlined'}
-                            color={scrolled ? 'primary' : 'inherit'}
-                            className={scrolled ? 'nav-btn-solid' : 'nav-btn-translucent'}
-                            onClick={() => navigate('/dash')}
-                            sx={{ margin: 1 }}
-                        >
-                            &nbsp;Dashboard&nbsp;
-                        </Button>
+
                         <Button
                             variant='contained'
                             color='#ffe082'

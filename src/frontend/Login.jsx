@@ -14,6 +14,15 @@ const Login = () => {
 
     setMessage('');
 
+    // Check for admin credentials
+    if (email === 'admin@catering.com' && password === 'vmcj') {
+      setMessage('Admin login successful!');
+      localStorage.setItem('token', 'admin-token');
+      localStorage.setItem('userRole', 'admin');
+      navigate('/dash'); // Redirect to dashboard
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:3000/api/auth/login', {
         method: 'POST',
@@ -28,7 +37,8 @@ const Login = () => {
       if (response.ok) {
         setMessage(data.message || 'Login successful!');
         localStorage.setItem('token', data.token);
-        navigate('/'); // Changed from '/' to '/dash' based on your App.jsx routing
+        localStorage.setItem('userRole', 'user');
+        navigate('/'); // Regular users go to home page
       } else {
         setMessage(data.error || data.message || 'Login failed. Please check your credentials.');
         console.error('Login error:', data.error || data.message);
@@ -71,16 +81,16 @@ const Login = () => {
             <Grid container spacing={1.5} direction="column" alignItems="center" justifyContent="center">
               <Grid item xs={12} sx={{ width: { xs: '100%', sm: '80%' } }}>
                 <TextField
-                  label="Email" // Changed label from "Full Name" to "Email"
-                  type="email" // Added type="email"
+                  label="Email" 
+                  type="email" 
                   variant="outlined"
                   fullWidth
                   required
                   size="small"
                   InputLabelProps={{ style: { fontSize: '0.95rem' } }}
                   inputProps={{ style: { fontSize: '0.95rem' } }}
-                  value={email} // CONNECTED TO STATE
-                  onChange={(e) => setEmail(e.target.value)} // UPDATES STATE
+                  value={email} 
+                  onChange={(e) => setEmail(e.target.value)} 
                 />
               </Grid>
               <Grid item xs={12} sx={{ width: { xs: '100%', sm: '80%' } }}>

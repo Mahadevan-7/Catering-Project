@@ -75,7 +75,7 @@ const Contact = () => {
                 <Box 
                     sx={{ 
                         width: '50%',
-                        background: 'rgba(0, 0, 0, 0.8)',
+                        background: 'translucent',
                         color: 'white',
                         p: 6,
                         display: 'flex',

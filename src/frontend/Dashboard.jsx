@@ -4,8 +4,501 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
+import CircularProgress from '@mui/material/CircularProgress';
+import Alert from '@mui/material/Alert';
 import './Dashboard.css';
 import WhatsAppContact from './WhatsAppContact';
+
+// Orders Grid Component
+const OrdersGrid = () => {
+    const [orders, setOrders] = React.useState([]);
+    const [loading, setLoading] = React.useState(true);
+    const [error, setError] = React.useState(null);
+    const [page, setPage] = React.useState(1);
+    const [hasMore, setHasMore] = React.useState(true);
+    const itemsPerPage = 20;
+
+    React.useEffect(() => {
+        fetchOrders();
+    }, []);
+
+    const fetchOrders = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            
+            // Create a timeout to prevent long loading
+            const timeoutId = setTimeout(() => {
+                setError('Request timeout. Please try again.');
+                setLoading(false);
+            }, 10000); // 10 second timeout
+
+            // Limit the API response to first 100 items for better performance
+            const response = await fetch('https://jsonplaceholder.typicode.com/photos?_limit=100');
+            
+            clearTimeout(timeoutId);
+            
+            if (!response.ok) {
+                throw new Error('Failed to fetch orders');
+            }
+            
+            const data = await response.json();
+            
+            // Transform the data to look more like orders
+            const transformedData = data.slice(0, 50).map((item, index) => ({
+                id: item.id,
+                orderNumber: `ORD-${String(item.id).padStart(4, '0')}`,
+                status: ['Pending', 'Confirmed', 'Completed', 'Cancelled'][Math.floor(Math.random() * 4)],
+                customerName: `Customer ${item.albumId}`,
+                orderDate: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
+                itemCount: Math.floor(Math.random() * 10) + 1,
+                totalAmount: Math.floor(Math.random() * 5000) + 500,
+                eventType: ['Wedding', 'Birthday', 'Corporate', 'Anniversary'][Math.floor(Math.random() * 4)],
+                thumbnailUrl: item.thumbnailUrl
+            }));
+            
+            setOrders(transformedData);
+            setHasMore(transformedData.length >= itemsPerPage);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const getStatusColor = (status) => {
+        switch (status?.toLowerCase()) {
+            case 'pending':
+                return 'warning';
+            case 'confirmed':
+                return 'info';
+            case 'completed':
+                return 'success';
+            case 'cancelled':
+                return 'error';
+            default:
+                return 'default';
+        }
+    };
+
+    // Get paginated orders
+    const getPaginatedOrders = () => {
+        const startIndex = (page - 1) * itemsPerPage;
+        return orders.slice(startIndex, startIndex + itemsPerPage);
+    };
+
+    const handleLoadMore = () => {
+        if (hasMore) {
+            setPage(prev => prev + 1);
+        }
+    };
+
+    if (loading) {
+        return (
+            <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
+                <CircularProgress sx={{ color: 'rgba(255, 255, 255, 0.8)' }} />
+            </Box>
+        );
+    }
+
+    if (error) {
+        return (
+            <Box>
+                <Alert severity="error" sx={{ mb: 2 }}>
+                    {error}
+                </Alert>
+                <Button 
+                    variant="outlined" 
+                    onClick={fetchOrders}
+                    sx={{ 
+                        color: 'rgba(255, 255, 255, 0.8)', 
+                        borderColor: 'rgba(255, 255, 255, 0.3)',
+                        '&:hover': {
+                            borderColor: 'rgba(255, 255, 255, 0.6)',
+                            backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }}
+                >
+                    Retry
+                </Button>
+            </Box>
+        );
+    }
+
+    const displayedOrders = getPaginatedOrders();
+
+    return (
+        <Box sx={{ flexGrow: 1 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+                <Typography variant="h5" sx={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: 600 }}>
+                    Orders ({orders.length})
+                </Typography>
+                <Button 
+                    variant="outlined" 
+                    onClick={fetchOrders}
+                    sx={{ 
+                        color: 'rgba(255, 255, 255, 0.8)', 
+                        borderColor: 'rgba(255, 255, 255, 0.3)',
+                        '&:hover': {
+                            borderColor: 'rgba(255, 255, 255, 0.6)',
+                            backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }}
+                >
+                    Refresh
+                </Button>
+            </Box>
+            
+            {orders.length === 0 ? (
+                <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
+                    <Typography variant="h6" sx={{ color: 'rgba(255, 255, 255, 0.6)' }}>
+                        No orders found
+                    </Typography>
+                </Box>
+            ) : (
+                <>
+                    <Grid container spacing={3}>
+                        {displayedOrders.map((order, index) => (
+                            <Grid item xs={12} sm={6} md={4} lg={3} key={order.id || index}>
+                                <Card 
+                                    sx={{ 
+                                        background: 'rgba(255, 255, 255, 0.1)',
+                                        backdropFilter: 'blur(10px)',
+                                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                                        transition: 'all 0.3s ease',
+                                        '&:hover': {
+                                            transform: 'translateY(-4px)',
+                                            boxShadow: '0 8px 25px rgba(0, 0, 0, 0.3)',
+                                            border: '1px solid rgba(255, 255, 255, 0.4)'
+                                        }
+                                    }}
+                                >
+                                    <CardContent>
+                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+                                            <Typography variant="h6" sx={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: 600 }}>
+                                                {order.orderNumber}
+                                            </Typography>
+                                            <Chip 
+                                                label={order.status} 
+                                                color={getStatusColor(order.status)}
+                                                size="small"
+                                                sx={{ 
+                                                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                                                    color: 'rgba(255, 255, 255, 0.9)'
+                                                }}
+                                            />
+                                        </Box>
+                                        
+                                        <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 1 }}>
+                                            <strong>Customer:</strong> {order.customerName}
+                                        </Typography>
+                                        
+                                        <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 1 }}>
+                                            <strong>Date:</strong> {new Date(order.orderDate).toLocaleDateString()}
+                                        </Typography>
+                                        
+                                        <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 1 }}>
+                                            <strong>Items:</strong> {order.itemCount}
+                                        </Typography>
+
+                                        <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 2 }}>
+                                            <strong>Total:</strong> ₹{order.totalAmount}
+                                        </Typography>
+                                        
+                                        <Chip 
+                                            label={order.eventType} 
+                                            variant="outlined"
+                                            size="small"
+                                            sx={{ 
+                                                borderColor: 'rgba(255, 255, 255, 0.3)',
+                                                color: 'rgba(255, 255, 255, 0.8)'
+                                            }}
+                                        />
+                                    </CardContent>
+                                    
+                                    <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
+                                        <Button 
+                                            size="small" 
+                                            sx={{ 
+                                                color: 'rgba(255, 255, 255, 0.8)',
+                                                '&:hover': {
+                                                    backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                                                }
+                                            }}
+                                        >
+                                            View Details
+                                        </Button>
+                                        <Button 
+                                            size="small" 
+                                            variant="contained"
+                                            sx={{ 
+                                                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                                                color: 'rgba(255, 255, 255, 0.9)',
+                                                '&:hover': {
+                                                    backgroundColor: 'rgba(255, 255, 255, 0.3)'
+                                                }
+                                            }}
+                                        >
+                                            Update Status
+                                        </Button>
+                                    </CardActions>
+                                </Card>
+                            </Grid>
+                        ))}
+                    </Grid>
+                    
+                    {hasMore && displayedOrders.length < orders.length && (
+                        <Box display="flex" justifyContent="center" mt={3}>
+                            <Button 
+                                variant="outlined" 
+                                onClick={handleLoadMore}
+                                sx={{ 
+                                    color: 'rgba(255, 255, 255, 0.8)', 
+                                    borderColor: 'rgba(255, 255, 255, 0.3)',
+                                    '&:hover': {
+                                        borderColor: 'rgba(255, 255, 255, 0.6)',
+                                        backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                                    }
+                                }}
+                            >
+                                Load More Orders
+                            </Button>
+                        </Box>
+                    )}
+                </>
+            )}
+        </Box>
+    );
+};
+
+// Products Grid Component
+const ProductsGrid = () => {
+    const [products, setProducts] = React.useState([]);
+    const [loading, setLoading] = React.useState(true);
+    const [error, setError] = React.useState(null);
+
+    React.useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    const fetchProducts = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            
+            // Create a timeout to prevent long loading
+            const timeoutId = setTimeout(() => {
+                setError('Request timeout. Please try again.');
+                setLoading(false);
+            }, 10000); // 10 second timeout
+
+            // Use the same API endpoint as the Products page
+            const response = await fetch('http://localhost:3001/products');
+            
+            clearTimeout(timeoutId);
+            
+            if (!response.ok) {
+                throw new Error('Failed to fetch products');
+            }
+            
+            const data = await response.json();
+            setProducts(data);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (loading) {
+        return (
+            <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
+                <CircularProgress sx={{ color: 'rgba(255, 255, 255, 0.8)' }} />
+            </Box>
+        );
+    }
+
+    if (error) {
+        return (
+            <Box>
+                <Alert severity="error" sx={{ mb: 2 }}>
+                    {error}
+                </Alert>
+                <Button 
+                    variant="outlined" 
+                    onClick={fetchProducts}
+                    sx={{ 
+                        color: 'rgba(255, 255, 255, 0.8)', 
+                        borderColor: 'rgba(255, 255, 255, 0.3)',
+                        '&:hover': {
+                            borderColor: 'rgba(255, 255, 255, 0.6)',
+                            backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }}
+                >
+                    Retry
+                </Button>
+            </Box>
+        );
+    }
+
+    return (
+        <Box sx={{ flexGrow: 1 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+                <Typography variant="h5" sx={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: 600 }}>
+                    Products ({products.length})
+                </Typography>
+                <Box sx={{ display: 'flex', gap: 2 }}>
+                    <Button 
+                        variant="contained"
+                        sx={{ 
+                            backgroundColor: 'rgba(76, 175, 80, 0.8)',
+                            color: 'rgba(255, 255, 255, 0.9)',
+                            '&:hover': {
+                                backgroundColor: 'rgba(76, 175, 80, 1)'
+                            }
+                        }}
+                    >
+                        + Add Product
+                    </Button>
+                    <Button 
+                        variant="outlined" 
+                        onClick={fetchProducts}
+                        sx={{ 
+                            color: 'rgba(255, 255, 255, 0.8)', 
+                            borderColor: 'rgba(255, 255, 255, 0.3)',
+                            '&:hover': {
+                                borderColor: 'rgba(255, 255, 255, 0.6)',
+                                backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }}
+                    >
+                        Refresh
+                    </Button>
+                </Box>
+            </Box>
+            
+            {products.length === 0 ? (
+                <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
+                    <Typography variant="h6" sx={{ color: 'rgba(255, 255, 255, 0.6)' }}>
+                        No products found
+                    </Typography>
+                </Box>
+            ) : (
+                <Grid container spacing={3}>
+                    {products.map((product, index) => (
+                        <Grid item xs={12} sm={6} md={4} lg={3} key={product.id || index}>
+                            <Card 
+                                sx={{ 
+                                    background: 'rgba(255, 255, 255, 0.1)',
+                                    backdropFilter: 'blur(10px)',
+                                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                                    transition: 'all 0.3s ease',
+                                    maxWidth: 280,
+                                    minHeight: 380,
+                                    '&:hover': {
+                                        transform: 'translateY(-4px)',
+                                        boxShadow: '0 8px 25px rgba(0, 0, 0, 0.3)',
+                                        border: '1px solid rgba(255, 255, 255, 0.4)'
+                                    }
+                                }}
+                            >
+                                <Box
+                                    sx={{
+                                        height: 140,
+                                        backgroundImage: `url(${product.image})`,
+                                        backgroundSize: 'contain',
+                                        backgroundPosition: 'center',
+                                        backgroundRepeat: 'no-repeat',
+                                        p: 2,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}
+                                />
+                                
+                                <CardContent>
+                                    <Typography variant="h6" sx={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: 600, mb: 1 }}>
+                                        {product.title?.substring(0, 20)}...
+                                    </Typography>
+                                    
+                                    <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 1.5 }}>
+                                        {product.description?.substring(0, 100)}...
+                                    </Typography>
+                                    
+                                    <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)', fontWeight: 500, mb: 2 }}>
+                                        ₹{product.price} per no.
+                                    </Typography>
+                                    
+                                    {product.category && (
+                                        <Chip 
+                                            label={product.category} 
+                                            variant="outlined"
+                                            size="small"
+                                            sx={{ 
+                                                borderColor: 'rgba(255, 255, 255, 0.3)',
+                                                color: 'rgba(255, 255, 255, 0.8)'
+                                            }}
+                                        />
+                                    )}
+                                </CardContent>
+                                
+                                <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
+                                    <Button 
+                                        size="small" 
+                                        sx={{ 
+                                            color: 'rgba(255, 255, 255, 0.8)',
+                                            '&:hover': {
+                                                backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                                            }
+                                        }}
+                                    >
+                                        View Details
+                                    </Button>
+                                    <Box sx={{ display: 'flex', gap: 1 }}>
+                                        <Button 
+                                            size="small" 
+                                            variant="contained"
+                                            sx={{ 
+                                                backgroundColor: 'rgba(33, 150, 243, 0.8)',
+                                                color: 'rgba(255, 255, 255, 0.9)',
+                                                '&:hover': {
+                                                    backgroundColor: 'rgba(33, 150, 243, 1)'
+                                                }
+                                            }}
+                                        >
+                                            Edit
+                                        </Button>
+                                        <Button 
+                                            size="small" 
+                                            variant="contained"
+                                            sx={{ 
+                                                backgroundColor: 'rgba(244, 67, 54, 0.8)',
+                                                color: 'rgba(255, 255, 255, 0.9)',
+                                                '&:hover': {
+                                                    backgroundColor: 'rgba(244, 67, 54, 1)'
+                                                }
+                                            }}
+                                        >
+                                            Delete
+                                        </Button>
+                                    </Box>
+                                </CardActions>
+                            </Card>
+                        </Grid>
+                    ))}
+                </Grid>
+            )}
+        </Box>
+    );
+};
 
 const Dashboard = () => {
     const [value, setValue] = React.useState('1');
@@ -17,8 +510,34 @@ const Dashboard = () => {
     return (
         <div className='dashboard-container'>
             <WhatsAppContact />
-            <div className='glass-morphism-card'>
-                <Box sx={{ width: '100%', typography: 'body1', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', p: 0 }}>
+            <div className='glass-morphism-card' style={{
+                maxHeight: '80vh',
+                overflowY: 'auto',
+                scrollbarWidth: 'thin',
+                scrollbarColor: 'rgba(255, 255, 255, 0.3) transparent'
+            }}>
+                <Box sx={{ 
+                    width: '100%', 
+                    typography: 'body1', 
+                    flex: 1, 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    justifyContent: 'flex-start', 
+                    p: 0,
+                    '&::-webkit-scrollbar': {
+                        width: '8px',
+                    },
+                    '&::-webkit-scrollbar-track': {
+                        background: 'transparent',
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                        background: 'rgba(255, 255, 255, 0.3)',
+                        borderRadius: '4px',
+                        '&:hover': {
+                            background: 'rgba(255, 255, 255, 0.5)',
+                        }
+                    }
+                }}>
                     <TabContext value={value}>
                         <Box sx={{ borderBottom: 1, borderColor: 'rgba(255, 255, 255, 0.2)', p: 0, m: 0 }}>
                             <TabList
@@ -50,8 +569,12 @@ const Dashboard = () => {
                                 <Tab label="Products" value="2" sx={{ minHeight: 44 }} />
                             </TabList>
                         </Box>
-                        <TabPanel value="1" sx={{ flex: 1, color: 'rgba(255, 255, 255, 0.9)' }}>Item One</TabPanel>
-                        <TabPanel value="2" sx={{ flex: 1, color: 'rgba(255, 255, 255, 0.9)' }}>Item Two</TabPanel>
+                        <TabPanel value="1" sx={{ flex: 1, color: 'rgba(255, 255, 255, 0.9)', overflowY: 'auto' }}>
+                            <OrdersGrid />
+                        </TabPanel>
+                        <TabPanel value="2" sx={{ flex: 1, color: 'rgba(255, 255, 255, 0.9)', overflowY: 'auto' }}>
+                            <ProductsGrid />
+                        </TabPanel>
                     </TabContext>
                 </Box>
             </div>
