@@ -10,6 +10,7 @@ const Navbar = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
+    const [isAdmin, setIsAdmin] = useState(localStorage.getItem('userRole') === 'admin');
 
     useEffect(() => {
         const handleScroll = () => {
@@ -24,7 +25,10 @@ const Navbar = () => {
     }, []);
 
     useEffect(() => {
-        const handleStorage = () => setIsAuthenticated(!!localStorage.getItem('token'));
+        const handleStorage = () => {
+            setIsAuthenticated(!!localStorage.getItem('token'));
+            setIsAdmin(localStorage.getItem('userRole') === 'admin');
+        };
         window.addEventListener('storage', handleStorage);
         return () => window.removeEventListener('storage', handleStorage);
     }, []);
@@ -44,6 +48,7 @@ const Navbar = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('userRole');
         setIsAuthenticated(false);
+        setIsAdmin(false);
         navigate('/');
     };
 
@@ -150,7 +155,7 @@ const Navbar = () => {
                                 &nbsp;Products&nbsp;
                             </Button>
                         )}
-                        {isAuthenticated && (
+                        {isAdmin && (
                             <Button
                                 variant={scrolled ? 'contained' : 'outlined'}
                                 color={scrolled ? 'primary' : 'inherit'}
