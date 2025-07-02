@@ -73,15 +73,14 @@ const Contact = () => {
             <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 200px)', mt: 8 }}>
                 {/* Left Half - Contact Information */}
                 <Box 
+                    className="contact-translucent-bg"
                     sx={{ 
                         width: '50%',
-                        background: 'translucent',
                         color: 'white',
                         p: 6,
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'center',
-                        backdropFilter: 'blur(10px)'
                     }}
                 >
                     <Typography 
@@ -199,14 +198,13 @@ const Contact = () => {
 
                 
                 <Box 
+                    className="contact-translucent-bg"
                     sx={{ 
                         width: '50%',
                         p: 4,
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'flex-start',
-                        background: 'translucent',
-                        backdropFilter: 'blur(10px)',
                         pt: 8
                     }}
                 >

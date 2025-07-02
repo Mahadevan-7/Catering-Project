@@ -224,20 +224,11 @@ button:focus-visible {
   color: #1a1a1a !important;
 }
 
-/* Cart Badge Hover Effect */
 .cart-badge:hover {
   transform: scale(1.05) !important;
   transition: transform 0.2s ease !important;
 }
 
-/* .pay{
-  width: 800px;
-  height: 600px;
-  background-color: whitesmoke;
-  border: #1a1a1a solid;
-  border: 2px;
-  border-radius: 8%;padding-top: 100px;
-} */
 .inner-pay {
   z-index: 10000;
   width: 500px;
@@ -251,7 +242,6 @@ button:focus-visible {
 
 }
 
-/* Navbar background and button styles */
 .navbar-translucent {
   background: rgba(20, 20, 20, 0.45) !important;
   backdrop-filter: blur(8px);
@@ -338,7 +328,7 @@ button:focus-visible {
   margin: 20px;
 }
 
-/* Disable hover transformations on Material-UI CardActionArea */
+
 .MuiCardActionArea-root {
   transition: none !important;
   transform: none !important;
@@ -378,5 +368,14 @@ button:focus-visible {
   transform: scale(1.4);
   transition: transform 0.3s ease;
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.159);
+}
+
+.contact-translucent-bg {
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(8px); 
+  border-radius: 16px;
+  box-shadow: 0 40px 24px rgba(0,0,0,0.12);
+  padding: 32px;
 }
 
