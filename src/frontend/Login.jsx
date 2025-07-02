@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Button, Typography, Grid, TextField, Divider, Box } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,12 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      navigate('/');
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,7 +25,7 @@ const Login = () => {
       setMessage('Admin login successful!');
       localStorage.setItem('token', 'admin-token');
       localStorage.setItem('userRole', 'admin');
-      navigate('/dash'); // Redirect to dashboard
+      window.location.href = '/dash'; // Force reload to dashboard
       return;
     }
 
@@ -38,7 +44,7 @@ const Login = () => {
         setMessage(data.message || 'Login successful!');
         localStorage.setItem('token', data.token);
         localStorage.setItem('userRole', 'user');
-        navigate('/'); // Regular users go to home page
+        window.location.href = '/'; // Force reload to home
       } else {
         setMessage(data.error || data.message || 'Login failed. Please check your credentials.');
         console.error('Login error:', data.error || data.message);

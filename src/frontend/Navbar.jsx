@@ -9,6 +9,7 @@ const Navbar = () => {
     const [mobileOpen, setMobileOpen] = useState(false);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
 
     useEffect(() => {
         const handleScroll = () => {
@@ -22,6 +23,12 @@ const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    useEffect(() => {
+        const handleStorage = () => setIsAuthenticated(!!localStorage.getItem('token'));
+        window.addEventListener('storage', handleStorage);
+        return () => window.removeEventListener('storage', handleStorage);
+    }, []);
+
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
@@ -31,6 +38,13 @@ const Navbar = () => {
         if (isMobile) {
             setMobileOpen(false);
         }
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userRole');
+        setIsAuthenticated(false);
+        navigate('/');
     };
 
     const navItems = [
@@ -75,6 +89,12 @@ const Navbar = () => {
         </Box>
     );
 
+    // After successful login, force a reload to update the navbar
+    const handleLoginSuccess = () => {
+        setIsAuthenticated(true);
+        window.location.reload();
+    };
+
     return (
         <div>
             <AppBar
@@ -95,28 +115,21 @@ const Navbar = () => {
                             color={scrolled ? 'primary' : 'inherit'}
                             className={scrolled ? 'nav-btn-solid' : 'nav-btn-translucent'}
                             onClick={() => navigate('/')}
-                            sx={{ margin: 1 }}
+                            sx={{ margin: 1}}
                         >
                             &nbsp;Home&nbsp;
                         </Button>
-                        <Button
-                            variant={scrolled ? 'contained' : 'outlined'}
-                            color={scrolled ? 'primary' : 'inherit'}
-                            className={scrolled ? 'nav-btn-solid' : 'nav-btn-translucent'}
-                            onClick={() => navigate('/log')}
-                            sx={{ margin: 1 }}
-                        >
-                            &nbsp;Register&nbsp;/&nbsp;Login&nbsp;
-                        </Button>
-                        <Button
-                            variant={scrolled ? 'contained' : 'outlined'}
-                            color={scrolled ? 'primary' : 'inherit'}
-                            className={scrolled ? 'nav-btn-solid' : 'nav-btn-translucent'}
-                            onClick={() => navigate('/prod')}
-                            sx={{ margin: 1 }}
-                        >
-                            &nbsp;Products&nbsp;
-                        </Button>
+                        {!isAuthenticated && (
+                            <Button
+                                variant={scrolled ? 'contained' : 'outlined'}
+                                color={scrolled ? 'primary' : 'inherit'}
+                                className={scrolled ? 'nav-btn-solid' : 'nav-btn-translucent'}
+                                onClick={() => navigate('/log')}
+                                sx={{ margin: 1 }}
+                            >
+                                &nbsp;Register&nbsp;/&nbsp;Login&nbsp;
+                            </Button>
+                        )}
                         <Button
                             variant={scrolled ? 'contained' : 'outlined'}
                             color={scrolled ? 'primary' : 'inherit'}
@@ -126,7 +139,39 @@ const Navbar = () => {
                         >
                             &nbsp;About us&nbsp;
                         </Button>
-
+                        {isAuthenticated && (
+                            <Button
+                                variant={scrolled ? 'contained' : 'outlined'}
+                                color={scrolled ? 'primary' : 'inherit'}
+                                className={scrolled ? 'nav-btn-solid' : 'nav-btn-translucent'}
+                                onClick={() => navigate('/prod')}
+                                sx={{ margin: 1 }}
+                            >
+                                &nbsp;Products&nbsp;
+                            </Button>
+                        )}
+                        {isAuthenticated && (
+                            <Button
+                                variant={scrolled ? 'contained' : 'outlined'}
+                                color={scrolled ? 'primary' : 'inherit'}
+                                className={scrolled ? 'nav-btn-solid' : 'nav-btn-translucent'}
+                                onClick={() => navigate('/dash')}
+                                sx={{ margin: 1 }}
+                            >
+                                &nbsp;Dashboard&nbsp;
+                            </Button>
+                        )}
+                        {isAuthenticated && (
+                            <Button
+                                variant='contained'
+                                color='error'
+                                className='nav-btn-menu'
+                                onClick={() => { handleLogout(); window.location.reload(); }}
+                                sx={{ margin: 1 }}
+                            >
+                                &nbsp;Logout&nbsp;
+                            </Button>
+                        )}
                         <Button
                             variant='contained'
                             color='#ffe082'
