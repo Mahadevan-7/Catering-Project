@@ -66,9 +66,9 @@ const Navbar = () => {
             <List>
                 {navItems.map((item) => (
                     <ListItem key={item.text} onClick={() => handleNavigation(item.path)}>
-                        <ListItemText 
-                            primary={item.text} 
-                            sx={{ 
+                        <ListItemText
+                            primary={item.text}
+                            sx={{
                                 color: 'white',
                                 '& .MuiListItemText-primary': {
                                     fontSize: '1.1rem',
@@ -112,7 +112,7 @@ const Navbar = () => {
                         <h2><span>Silver Spoon</span> Catering</h2>
                     </div>
                     <Box sx={{ flexGrow: 1 }} />
-                    
+
                     {/* Desktop Navigation */}
                     <Box sx={{ display: { xs: 'none', md: 'flex' }, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                         <Button
@@ -120,7 +120,7 @@ const Navbar = () => {
                             color={scrolled ? 'primary' : 'inherit'}
                             className={scrolled ? 'nav-btn-solid' : 'nav-btn-translucent'}
                             onClick={() => navigate('/')}
-                            sx={{ margin: 1}}
+                            sx={{ margin: 1 }}
                         >
                             &nbsp;Home&nbsp;
                         </Button>
@@ -133,6 +133,30 @@ const Navbar = () => {
                                 sx={{ margin: 1 }}
                             >
                                 &nbsp;Register&nbsp;/&nbsp;Login&nbsp;
+                            </Button>
+                        )}
+
+                        {isAuthenticated && (
+                            <Button
+                                variant={scrolled ? 'contained' : 'outlined'}
+                                color={scrolled ? 'primary' : 'inherit'}
+                                className={scrolled ? 'nav-btn-solid' : 'nav-btn-translucent'}
+                                onClick={() => navigate('/prod')}
+                                sx={{ margin: 1 }}
+                            >
+                                &nbsp;Products&nbsp;
+                            </Button>
+                        )}
+
+                        {isAdmin && (
+                            <Button
+                                variant={scrolled ? 'contained' : 'outlined'}
+                                color={scrolled ? 'primary' : 'inherit'}
+                                className={scrolled ? 'nav-btn-solid' : 'nav-btn-translucent'}
+                                onClick={() => navigate('/dash')}
+                                sx={{ margin: 1 }}
+                            >
+                                &nbsp;Dashboard&nbsp;
                             </Button>
                         )}
                         <Button
@@ -149,34 +173,13 @@ const Navbar = () => {
                                 variant={scrolled ? 'contained' : 'outlined'}
                                 color={scrolled ? 'primary' : 'inherit'}
                                 className={scrolled ? 'nav-btn-solid' : 'nav-btn-translucent'}
-                                onClick={() => navigate('/prod')}
-                                sx={{ margin: 1 }}
-                            >
-                                &nbsp;Products&nbsp;
-                            </Button>
-                        )}
-                        {isAdmin && (
-                            <Button
-                                variant={scrolled ? 'contained' : 'outlined'}
-                                color={scrolled ? 'primary' : 'inherit'}
-                                className={scrolled ? 'nav-btn-solid' : 'nav-btn-translucent'}
-                                onClick={() => navigate('/dash')}
-                                sx={{ margin: 1 }}
-                            >
-                                &nbsp;Dashboard&nbsp;
-                            </Button>
-                        )}
-                        {isAuthenticated && (
-                            <Button
-                                variant='contained'
-                                color='error'
-                                className='nav-btn-menu'
                                 onClick={() => { handleLogout(); window.location.reload(); }}
                                 sx={{ margin: 1 }}
                             >
                                 &nbsp;Logout&nbsp;
                             </Button>
                         )}
+
                         <Button
                             variant='contained'
                             color='#ffe082'
@@ -212,8 +215,8 @@ const Navbar = () => {
                 }}
                 sx={{
                     display: { xs: 'block', md: 'none' },
-                    '& .MuiDrawer-paper': { 
-                        boxSizing: 'border-box', 
+                    '& .MuiDrawer-paper': {
+                        boxSizing: 'border-box',
                         width: 240,
                         backgroundColor: 'rgba(20, 20, 20, 0.95)',
                         backdropFilter: 'blur(8px)'
