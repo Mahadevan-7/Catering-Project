@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 // You can add more routes here, e.g., to create an order, get a single order, update, or delete.
 // Example: Route to create a new order (when someone purchases)
 router.post('/', async (req, res) => {
-    const { email, items, total } = req.body;
+    const { email, customerName, phone, address, items, total, status, eventType } = req.body;
 
     // Basic validation
     if (!email || !items || !total) {
@@ -26,8 +26,13 @@ router.post('/', async (req, res) => {
     try {
         const newOrder = new Order({
             email,
+            customerName,
+            phone,
+            address,
             items,
             total,
+            status,
+            eventType
         });
 
         await newOrder.save();
@@ -38,5 +43,20 @@ router.post('/', async (req, res) => {
     }
 });
 
+// PUT route to update an order by ID (admin only)
+router.put('/:id', async (req, res) => {
+    try {
+        const orderId = req.params.id;
+        const updateData = req.body;
+        const updatedOrder = await Order.findByIdAndUpdate(orderId, updateData, { new: true });
+        if (!updatedOrder) {
+            return res.status(404).json({ message: 'Order not found.' });
+        }
+        res.status(200).json({ message: 'Order updated successfully.', order: updatedOrder });
+    } catch (err) {
+        console.error('Error updating order:', err);
+        res.status(500).json({ message: 'Server error: Could not update order.' });
+    }
+});
 
 module.exports = router;

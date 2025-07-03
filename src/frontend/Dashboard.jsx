@@ -64,16 +64,19 @@ const OrdersGrid = () => {
 
             const data = await response.json();
 
-            const transformedData = data.slice(0, 50).map((item, index) => ({
-                id: item.id,
-                orderNumber: `ORD-${String(item.id).padStart(4, '0')}`,
-                status: ['Pending', 'Confirmed', 'Completed', 'Cancelled'][Math.floor(Math.random() * 4)],
-                customerName: `Customer ${item.albumId}`,
-                orderDate: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
-                itemCount: Math.floor(Math.random() * 10) + 1,
-                totalAmount: Math.floor(Math.random() * 5000) + 500,
-                eventType: ['Wedding', 'Birthday', 'Corporate', 'Anniversary'][Math.floor(Math.random() * 4)],
-                thumbnailUrl: item.thumbnailUrl
+            const transformedData = data.map((item, index) => ({
+                id: item._id || item.id,
+                orderNumber: `ORD-${String(item._id || item.id).slice(-4).padStart(4, '0')}`,
+                status: item.status || 'Pending',
+                customerName: item.customerName || 'Anonymous Customer',
+                email: item.email || 'No email provided',
+                phone: item.phone || 'No phone provided',
+                address: item.address || 'No address provided',
+                orderDate: item.createdAt || new Date().toISOString(),
+                itemCount: item.items ? item.items.length : 1,
+                totalAmount: item.total || 0,
+                eventType: item.eventType || 'General',
+                items: item.items || []
             }));
 
             setOrders(transformedData);
@@ -129,7 +132,7 @@ const OrdersGrid = () => {
 
         try {
             const response = await fetch(`http://localhost:3000/api/orders/${orderToUpdate.id}`, {
-                method: 'PATCH', // Or 'PUT', depending on your API
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -257,11 +260,15 @@ const OrdersGrid = () => {
                                         </Typography>
 
                                         <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 1 }}>
-                                            <strong>Date:</strong> {new Date(order.orderDate).toLocaleDateString()}
+                                            <strong>Phone:</strong> {order.phone}
                                         </Typography>
 
                                         <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 1 }}>
-                                            <strong>Items:</strong> {order.itemCount}
+                                            <strong>Item:</strong> {order.items && order.items.length > 0 ? order.items[0].title : 'No items'}
+                                        </Typography>
+
+                                        <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 1 }}>
+                                            <strong>Date:</strong> {new Date(order.orderDate).toLocaleDateString()}
                                         </Typography>
 
                                         <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 2 }}>
@@ -346,6 +353,15 @@ const OrdersGrid = () => {
                                 <strong>Customer Name:</strong> {selectedOrder.customerName}
                             </Typography>
                             <Typography variant="body1" gutterBottom>
+                                <strong>Email:</strong> {selectedOrder.email}
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                                <strong>Phone:</strong> {selectedOrder.phone}
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                                <strong>Address:</strong> {selectedOrder.address}
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
                                 <strong>Order Date:</strong> {new Date(selectedOrder.orderDate).toLocaleDateString()}
                             </Typography>
                             <Typography variant="body1" gutterBottom>
@@ -360,6 +376,18 @@ const OrdersGrid = () => {
                             <Typography variant="body1" gutterBottom>
                                 <strong>Status:</strong> <Chip label={selectedOrder.status} color={getStatusColor(selectedOrder.status)} size="small" />
                             </Typography>
+                            {selectedOrder.items && selectedOrder.items.length > 0 && (
+                                <Typography variant="body1" gutterBottom>
+                                    <strong>Items:</strong>
+                                    <Box sx={{ ml: 2, mt: 1 }}>
+                                        {selectedOrder.items.map((item, index) => (
+                                            <Typography key={index} variant="body2" sx={{ color: 'text.secondary' }}>
+                                                • {item.title} - Qty: {item.qty} - ₹{item.price}
+                                            </Typography>
+                                        ))}
+                                    </Box>
+                                </Typography>
+                            )}
                         </Box>
                     )}
                 </DialogContent>
