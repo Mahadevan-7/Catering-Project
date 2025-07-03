@@ -15,6 +15,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Alert from '@mui/material/Alert';
 import './Dashboard.css';
 import WhatsAppContact from './WhatsAppContact';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import TextField from '@mui/material/TextField';
+
 
 // Orders Grid Component
 const OrdersGrid = () => {
@@ -283,11 +289,73 @@ const ProductsGrid = () => {
     const [products, setProducts] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
+    const [editingProduct, setEditingProduct] = React.useState(null);
+    const handleEdit = (product) => {
+        setEditingProduct(product); 
+        alert(`Edit clicked for: ${product.title}`);
+    
+    };
+    const [openAddModal, setOpenAddModal] = React.useState(false);
+const [newProduct, setNewProduct] = React.useState({
+    title: '',
+    description: '',
+    image: '',
+    price: '',
+    category: ''
+});
+    const handleDelete = async (productId) => {
+        const confirmDelete = window.confirm('Are you sure you want to delete this product?');
+        if (!confirmDelete) return;
+
+        try {
+            const response = await fetch(`http://localhost:3001/products/${productId}`, {
+                method: 'DELETE'
+            });
+
+            if (!response.ok) throw new Error('Failed to delete');
+
+            // Remove from state
+            setProducts(prev => prev.filter(product => product.id !== productId));
+        } catch (error) {
+            alert(`Delete failed: ${error.message}`);
+        }
+    };
+    const handleAddProduct = async () => {
+        const productToAdd = {
+            ...newProduct,
+            price: parseFloat(newProduct.price),
+            id: Date.now().toString()
+        };
+    
+        try {
+            const response = await fetch('http://localhost:3001/products', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(productToAdd)
+            });
+    
+            if (!response.ok) throw new Error('Failed to add product');
+    
+            const addedProduct = await response.json();
+            setProducts(prev => [...prev, addedProduct]);
+            setOpenAddModal(false);
+            setNewProduct({
+                title: '',
+                description: '',
+                image: '',
+                price: '',
+                category: ''
+            });
+        } catch (err) {
+            alert('Error adding product: ' + err.message);
+        }
+    };
+    
+
 
     React.useEffect(() => {
         fetchProducts();
     }, []);
-
     const fetchProducts = async () => {
         try {
             setLoading(true);
@@ -348,7 +416,6 @@ const ProductsGrid = () => {
             </Box>
         );
     }
-
     return (
         <Box sx={{ flexGrow: 1 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
@@ -358,6 +425,7 @@ const ProductsGrid = () => {
                 <Box sx={{ display: 'flex', gap: 2 }}>
                     <Button 
                         variant="contained"
+                        onClick={() => setOpenAddModal(true)} 
                         sx={{ 
                             backgroundColor: 'rgba(76, 175, 80, 0.8)',
                             color: 'rgba(255, 255, 255, 0.9)',
@@ -466,6 +534,7 @@ const ProductsGrid = () => {
                                         <Button 
                                             size="small" 
                                             variant="contained"
+                                            onClick={() => handleEdit(product)}
                                             sx={{ 
                                                 backgroundColor: 'rgba(33, 150, 243, 0.8)',
                                                 color: 'rgba(255, 255, 255, 0.9)',
@@ -479,6 +548,7 @@ const ProductsGrid = () => {
                                         <Button 
                                             size="small" 
                                             variant="contained"
+                                            onClick={() => handleDelete(product.id)}
                                             sx={{ 
                                                 backgroundColor: 'rgba(244, 67, 54, 0.8)',
                                                 color: 'rgba(255, 255, 255, 0.9)',
@@ -496,6 +566,29 @@ const ProductsGrid = () => {
                     ))}
                 </Grid>
             )}
+              <Dialog open={openAddModal} onClose={() => setOpenAddModal(false)}>
+            <DialogTitle>Add New Product</DialogTitle>
+            <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
+                <TextField label="Title" fullWidth value={newProduct.title}
+                    onChange={(e) => setNewProduct({ ...newProduct, title: e.target.value })} />
+                <TextField label="Description" fullWidth multiline minRows={2}
+                    value={newProduct.description}
+                    onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })} />
+                <TextField label="Image URL" fullWidth
+                    value={newProduct.image}
+                    onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })} />
+                <TextField label="Price" fullWidth type="number"
+                    value={newProduct.price}
+                    onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })} />
+                <TextField label="Category" fullWidth
+                    value={newProduct.category}
+                    onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })} />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={() => setOpenAddModal(false)}>Cancel</Button>
+                <Button variant="contained" onClick={handleAddProduct}>Add</Button>
+            </DialogActions>
+        </Dialog>
         </Box>
     );
 };
