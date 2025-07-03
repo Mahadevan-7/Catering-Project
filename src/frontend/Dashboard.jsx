@@ -518,18 +518,7 @@ const [newProduct, setNewProduct] = React.useState({
                                     )}
                                 </CardContent>
                                 
-                                <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
-                                    <Button 
-                                        size="small" 
-                                        sx={{ 
-                                            color: 'rgba(255, 255, 255, 0.8)',
-                                            '&:hover': {
-                                                backgroundColor: 'rgba(255, 255, 255, 0.1)'
-                                            }
-                                        }}
-                                    >
-                                        View Details
-                                    </Button>
+                                <CardActions sx={{ justifyContent: 'center', px: 2, pb: 2 }}>
                                     <Box sx={{ display: 'flex', gap: 1 }}>
                                         <Button 
                                             size="small" 
@@ -579,14 +568,19 @@ const [newProduct, setNewProduct] = React.useState({
                     onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })} />
                 <TextField label="Price" fullWidth type="number"
                     value={newProduct.price}
-                    onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })} />
+                    onChange={(e) => {
+                        const val = e.target.value;
+                        setNewProduct({ ...newProduct, price: val === '' ? '' : Math.max(0, Number(val)) });
+                    }}
+                    inputProps={{ min: 0 }}
+                />
                 <TextField label="Category" fullWidth
                     value={newProduct.category}
                     onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })} />
             </DialogContent>
             <DialogActions>
-                <Button onClick={() => setOpenAddModal(false)}>Cancel</Button>
-                <Button variant="contained" onClick={handleAddProduct}>Add</Button>
+                <Button className='add-product-buttons-cancel' onClick={() => setOpenAddModal(false)}>Cancel</Button>
+                <Button className='add-product-buttons-add' variant="contained" onClick={handleAddProduct}>Add</Button>
             </DialogActions>
         </Dialog>
         </Box>
