@@ -9,8 +9,8 @@ const Navbar = () => {
     const [mobileOpen, setMobileOpen] = useState(false);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-    const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
-    const [isAdmin, setIsAdmin] = useState(localStorage.getItem('userRole') === 'admin');
+    const [isAuthenticated, setIsAuthenticated] = useState(!!sessionStorage.getItem('token'));
+    const [isAdmin, setIsAdmin] = useState(sessionStorage.getItem('userRole') === 'admin');
 
     useEffect(() => {
         const handleScroll = () => {
@@ -26,8 +26,8 @@ const Navbar = () => {
 
     useEffect(() => {
         const handleStorage = () => {
-            setIsAuthenticated(!!localStorage.getItem('token'));
-            setIsAdmin(localStorage.getItem('userRole') === 'admin');
+            setIsAuthenticated(!!sessionStorage.getItem('token'));
+            setIsAdmin(sessionStorage.getItem('userRole') === 'admin');
         };
         window.addEventListener('storage', handleStorage);
         return () => window.removeEventListener('storage', handleStorage);
@@ -45,8 +45,8 @@ const Navbar = () => {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userRole');
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('userRole');
         setIsAuthenticated(false);
         setIsAdmin(false);
         navigate('/');

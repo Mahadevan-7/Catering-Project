@@ -10,7 +10,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (sessionStorage.getItem('token')) {
       navigate('/');
     }
   }, [navigate]);
@@ -23,8 +23,8 @@ const Login = () => {
     // Check for admin credentials
     if (email === 'admin@catering.com' && password === 'vmcj') {
       setMessage('Admin login successful!');
-      localStorage.setItem('token', 'admin-token');
-      localStorage.setItem('userRole', 'admin');
+      sessionStorage.setItem('token', 'admin-token');
+      sessionStorage.setItem('userRole', 'admin');
       window.location.href = '/dash'; // Force reload to dashboard
       return;
     }
@@ -42,8 +42,8 @@ const Login = () => {
 
       if (response.ok) {
         setMessage(data.message || 'Login successful!');
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('userRole', 'user');
+        sessionStorage.setItem('token', data.token);
+        sessionStorage.setItem('userRole', 'user');
         window.location.href = '/'; // Force reload to home
       } else {
         setMessage(data.error || data.message || 'Login failed. Please check your credentials.');

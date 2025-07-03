@@ -29,11 +29,11 @@
       "price": 299
     },
     {
-      "id": 5,
+      "id": "5",
       "title": "Celebration Sweets Hamper",
       "description": "A grand hamper with Rasgulla, Soan Papdi, Mysore Pak and Peda – ideal for gifting.",
       "image": "https://i.pinimg.com/736x/a7/0f/dc/a70fdcb7d7285770adbbfbbe08983483.jpg",
-      "price": 899.00
+      "price": 899
     }
   ]
 }
