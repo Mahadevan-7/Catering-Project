@@ -31,6 +31,15 @@ const OrdersGrid = () => {
     const [hasMore, setHasMore] = React.useState(true);
     const itemsPerPage = 20;
 
+    // State for View Details Modal
+    const [selectedOrder, setSelectedOrder] = React.useState(null);
+    const [openDetailsModal, setOpenDetailsModal] = React.useState(false);
+
+    // State for Update Status Modal
+    const [orderToUpdate, setOrderToUpdate] = React.useState(null);
+    const [openStatusModal, setOpenStatusModal] = React.useState(false);
+    const [newStatus, setNewStatus] = React.useState('');
+
     React.useEffect(() => {
         fetchOrders();
     }, []);
@@ -39,25 +48,22 @@ const OrdersGrid = () => {
         try {
             setLoading(true);
             setError(null);
-            
-            // Create a timeout to prevent long loading
+
             const timeoutId = setTimeout(() => {
                 setError('Request timeout. Please try again.');
                 setLoading(false);
-            }, 10000); // 10 second timeout
+            }, 10000);
 
-            // Limit the API response to first 100 items for better performance
-            const response = await fetch('https://jsonplaceholder.typicode.com/photos?_limit=100');
-            
+            const response = await fetch('http://localhost:3000/api/orders');
+
             clearTimeout(timeoutId);
-            
+
             if (!response.ok) {
                 throw new Error('Failed to fetch orders');
             }
-            
+
             const data = await response.json();
-            
-            // Transform the data to look more like orders
+
             const transformedData = data.slice(0, 50).map((item, index) => ({
                 id: item.id,
                 orderNumber: `ORD-${String(item.id).padStart(4, '0')}`,
@@ -69,7 +75,7 @@ const OrdersGrid = () => {
                 eventType: ['Wedding', 'Birthday', 'Corporate', 'Anniversary'][Math.floor(Math.random() * 4)],
                 thumbnailUrl: item.thumbnailUrl
             }));
-            
+
             setOrders(transformedData);
             setHasMore(transformedData.length >= itemsPerPage);
         } catch (err) {
@@ -93,8 +99,6 @@ const OrdersGrid = () => {
                 return 'default';
         }
     };
-
-    // Get paginated orders
     const getPaginatedOrders = () => {
         const startIndex = (page - 1) * itemsPerPage;
         return orders.slice(startIndex, startIndex + itemsPerPage);
@@ -103,6 +107,52 @@ const OrdersGrid = () => {
     const handleLoadMore = () => {
         if (hasMore) {
             setPage(prev => prev + 1);
+        }
+    };
+
+    const handleViewDetails = (order) => {
+        setSelectedOrder(order);
+        setOpenDetailsModal(true);
+    };
+
+    const handleUpdateStatusClick = (order) => {
+        setOrderToUpdate(order);
+        setNewStatus(order.status); // Pre-fill with current status
+        setOpenStatusModal(true);
+    };
+
+    const handleSaveStatus = async () => {
+        if (!orderToUpdate || !newStatus) {
+            alert('Please select a new status.');
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/orders/${orderToUpdate.id}`, {
+                method: 'PATCH', // Or 'PUT', depending on your API
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: newStatus }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update order status');
+            }
+
+            // Update the order in the local state
+            setOrders(prevOrders =>
+                prevOrders.map(order =>
+                    order.id === orderToUpdate.id ? { ...order, status: newStatus } : order
+                )
+            );
+
+            setOpenStatusModal(false);
+            setOrderToUpdate(null);
+            setNewStatus('');
+            alert('Order status updated successfully!');
+        } catch (err) {
+            alert('Error updating status: ' + err.message);
         }
     };
 
@@ -120,11 +170,11 @@ const OrdersGrid = () => {
                 <Alert severity="error" sx={{ mb: 2 }}>
                     {error}
                 </Alert>
-                <Button 
-                    variant="outlined" 
+                <Button
+                    variant="outlined"
                     onClick={fetchOrders}
-                    sx={{ 
-                        color: 'rgba(255, 255, 255, 0.8)', 
+                    sx={{
+                        color: 'rgba(255, 255, 255, 0.8)',
                         borderColor: 'rgba(255, 255, 255, 0.3)',
                         '&:hover': {
                             borderColor: 'rgba(255, 255, 255, 0.6)',
@@ -146,11 +196,11 @@ const OrdersGrid = () => {
                 <Typography variant="h5" sx={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: 600 }}>
                     Orders ({orders.length})
                 </Typography>
-                <Button 
-                    variant="outlined" 
+                <Button
+                    variant="outlined"
                     onClick={fetchOrders}
-                    sx={{ 
-                        color: 'rgba(255, 255, 255, 0.8)', 
+                    sx={{
+                        color: 'rgba(255, 255, 255, 0.8)',
                         borderColor: 'rgba(255, 255, 255, 0.3)',
                         '&:hover': {
                             borderColor: 'rgba(255, 255, 255, 0.6)',
@@ -161,7 +211,7 @@ const OrdersGrid = () => {
                     Refresh
                 </Button>
             </Box>
-            
+
             {orders.length === 0 ? (
                 <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
                     <Typography variant="h6" sx={{ color: 'rgba(255, 255, 255, 0.6)' }}>
@@ -173,8 +223,8 @@ const OrdersGrid = () => {
                     <Grid container spacing={3}>
                         {displayedOrders.map((order, index) => (
                             <Grid item xs={12} sm={6} md={4} lg={3} key={order.id || index}>
-                                <Card 
-                                    sx={{ 
+                                <Card
+                                    sx={{
                                         background: 'rgba(255, 255, 255, 0.1)',
                                         backdropFilter: 'blur(10px)',
                                         border: '1px solid rgba(255, 255, 255, 0.2)',
@@ -191,25 +241,25 @@ const OrdersGrid = () => {
                                             <Typography variant="h6" sx={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: 600 }}>
                                                 {order.orderNumber}
                                             </Typography>
-                                            <Chip 
-                                                label={order.status} 
+                                            <Chip
+                                                label={order.status}
                                                 color={getStatusColor(order.status)}
                                                 size="small"
-                                                sx={{ 
+                                                sx={{
                                                     backgroundColor: 'rgba(255, 255, 255, 0.2)',
                                                     color: 'rgba(255, 255, 255, 0.9)'
                                                 }}
                                             />
                                         </Box>
-                                        
+
                                         <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 1 }}>
                                             <strong>Customer:</strong> {order.customerName}
                                         </Typography>
-                                        
+
                                         <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 1 }}>
                                             <strong>Date:</strong> {new Date(order.orderDate).toLocaleDateString()}
                                         </Typography>
-                                        
+
                                         <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 1 }}>
                                             <strong>Items:</strong> {order.itemCount}
                                         </Typography>
@@ -217,40 +267,42 @@ const OrdersGrid = () => {
                                         <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 2 }}>
                                             <strong>Total:</strong> ₹{order.totalAmount}
                                         </Typography>
-                                        
-                                        <Chip 
-                                            label={order.eventType} 
+
+                                        <Chip
+                                            label={order.eventType}
                                             variant="outlined"
                                             size="small"
-                                            sx={{ 
+                                            sx={{
                                                 borderColor: 'rgba(255, 255, 255, 0.3)',
                                                 color: 'rgba(255, 255, 255, 0.8)'
                                             }}
                                         />
                                     </CardContent>
-                                    
+
                                     <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
-                                        <Button 
-                                            size="small" 
-                                            sx={{ 
+                                        <Button
+                                            size="small"
+                                            sx={{
                                                 color: 'rgba(255, 255, 255, 0.8)',
                                                 '&:hover': {
                                                     backgroundColor: 'rgba(255, 255, 255, 0.1)'
                                                 }
                                             }}
+                                            onClick={() => handleViewDetails(order)}
                                         >
                                             View Details
                                         </Button>
-                                        <Button 
-                                            size="small" 
+                                        <Button
+                                            size="small"
                                             variant="contained"
-                                            sx={{ 
+                                            sx={{
                                                 backgroundColor: 'rgba(255, 255, 255, 0.2)',
                                                 color: 'rgba(255, 255, 255, 0.9)',
                                                 '&:hover': {
                                                     backgroundColor: 'rgba(255, 255, 255, 0.3)'
                                                 }
                                             }}
+                                            onClick={() => handleUpdateStatusClick(order)}
                                         >
                                             Update Status
                                         </Button>
@@ -259,14 +311,14 @@ const OrdersGrid = () => {
                             </Grid>
                         ))}
                     </Grid>
-                    
+
                     {hasMore && displayedOrders.length < orders.length && (
                         <Box display="flex" justifyContent="center" mt={3}>
-                            <Button 
-                                variant="outlined" 
+                            <Button
+                                variant="outlined"
                                 onClick={handleLoadMore}
-                                sx={{ 
-                                    color: 'rgba(255, 255, 255, 0.8)', 
+                                sx={{
+                                    color: 'rgba(255, 255, 255, 0.8)',
                                     borderColor: 'rgba(255, 255, 255, 0.3)',
                                     '&:hover': {
                                         borderColor: 'rgba(255, 255, 255, 0.6)',
@@ -280,6 +332,67 @@ const OrdersGrid = () => {
                     )}
                 </>
             )}
+
+            {/* Order Details Dialog */}
+            <Dialog open={openDetailsModal} onClose={() => setOpenDetailsModal(false)}>
+                <DialogTitle sx={{ color: 'black' }}>Order Details: {selectedOrder?.orderNumber}</DialogTitle>
+                <DialogContent dividers sx={{ color: 'black' }}>
+                    {selectedOrder && (
+                        <Box>
+                            <Typography variant="body1" gutterBottom>
+                                <strong>Order ID:</strong> {selectedOrder.id}
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                                <strong>Customer Name:</strong> {selectedOrder.customerName}
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                                <strong>Order Date:</strong> {new Date(selectedOrder.orderDate).toLocaleDateString()}
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                                <strong>Total Items:</strong> {selectedOrder.itemCount}
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                                <strong>Total Amount:</strong> ₹{selectedOrder.totalAmount}
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                                <strong>Event Type:</strong> {selectedOrder.eventType}
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                                <strong>Status:</strong> <Chip label={selectedOrder.status} color={getStatusColor(selectedOrder.status)} size="small" />
+                            </Typography>
+                        </Box>
+                    )}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenDetailsModal(false)} sx={{ color: 'black' }}>Close</Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* Update Status Dialog */}
+            <Dialog open={openStatusModal} onClose={() => setOpenStatusModal(false)}>
+                <DialogTitle sx={{ color: 'black' }}>Update Status for {orderToUpdate?.orderNumber}</DialogTitle>
+                <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
+                    <TextField
+                        select
+                        label="New Status"
+                        value={newStatus}
+                        onChange={(e) => setNewStatus(e.target.value)}
+                        fullWidth
+                        SelectProps={{ native: true }}
+                        InputLabelProps={{ shrink: true }}
+                    >
+                        <option value=""></option>
+                        <option value="Pending">Pending</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </TextField>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenStatusModal(false)} sx={{ color: 'black' }}>Cancel</Button>
+                    <Button variant="contained" onClick={handleSaveStatus} sx={{ color: 'black' }}>Save</Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };

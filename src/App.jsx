@@ -39,6 +39,7 @@ function App() {
         <Route path='/pay' element={<Payment></Payment>}></Route>
         <Route path='/payment-success' element={<PaymentSuccess />} />
         <Route path='/dash' element={<Dashboard />} />
+        
       </Routes>
     <Footer />
   </BrowserRouter>
