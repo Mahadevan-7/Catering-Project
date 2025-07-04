@@ -20,6 +20,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import TextField from '@mui/material/TextField';
+import EditProductModal from './components/EditProductModal'; 
 
 
 // Orders Grid Component
@@ -39,7 +40,7 @@ const OrdersGrid = () => {
     const [orderToUpdate, setOrderToUpdate] = React.useState(null);
     const [openStatusModal, setOpenStatusModal] = React.useState(false);
     const [newStatus, setNewStatus] = React.useState('');
-
+    
     React.useEffect(() => {
         fetchOrders();
     }, []);
@@ -430,6 +431,28 @@ const ProductsGrid = () => {
     const [products, setProducts] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
+    const [editOpen, setEditOpen] = React.useState(false);
+    const [selectedProduct, setSelectedProduct] = React.useState(null);
+  
+    const handleSaveEdit = async (updatedProduct) => {
+      try {
+        const res = await fetch(`http://localhost:3001/products/${updatedProduct.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedProduct),
+        });
+  
+        if (!res.ok) throw new Error("Failed to update");
+  
+        const updatedList = products.map((p) =>
+          p.id === updatedProduct.id ? updatedProduct : p
+        );
+        setProducts(updatedList);
+      } catch (err) {
+        console.error("Update error:", err);
+      }
+    };
+  
     const [editingProduct, setEditingProduct] = React.useState(null);
     const handleEdit = (product) => {
         setEditingProduct(product); 
@@ -491,9 +514,6 @@ const [newProduct, setNewProduct] = React.useState({
             alert('Error adding product: ' + err.message);
         }
     };
-    
-
-
     React.useEffect(() => {
         fetchProducts();
     }, []);
@@ -664,7 +684,10 @@ const [newProduct, setNewProduct] = React.useState({
                                         <Button 
                                             size="small" 
                                             variant="contained"
-                                            onClick={() => handleEdit(product)}
+                                            onClick={() => {
+                                                setSelectedProduct(product);  
+                                                setEditOpen(true);            
+                                               }}
                                             sx={{ 
                                                 backgroundColor: 'rgba(33, 150, 243, 0.8)',
                                                 color: 'rgba(255, 255, 255, 0.9)',
@@ -724,6 +747,12 @@ const [newProduct, setNewProduct] = React.useState({
                 <Button className='add-product-buttons-add' variant="contained" onClick={handleAddProduct}>Add</Button>
             </DialogActions>
         </Dialog>
+        <EditProductModal
+  open={editOpen}
+  handleClose={() => setEditOpen(false)}
+  product={selectedProduct}
+  onSave={handleSaveEdit}
+/>
         </Box>
     );
 };
