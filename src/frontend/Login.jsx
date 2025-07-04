@@ -7,6 +7,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState(''); // 'success' or 'error'
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,10 +20,12 @@ const Login = () => {
     e.preventDefault();
 
     setMessage('');
+    setMessageType('');
 
     // Check for admin credentials
     if (email === 'admin@catering.com' && password === 'vmcj') {
       setMessage('Admin login successful!');
+      setMessageType('success');
       sessionStorage.setItem('token', 'admin-token');
       sessionStorage.setItem('userRole', 'admin');
       window.location.href = '/dash'; // Force reload to dashboard
@@ -42,15 +45,18 @@ const Login = () => {
 
       if (response.ok) {
         setMessage(data.message || 'Login successful!');
+        setMessageType('success');
         sessionStorage.setItem('token', data.token);
         sessionStorage.setItem('userRole', 'user');
         window.location.href = '/'; // Force reload to home
       } else {
         setMessage(data.error || data.message || 'Login failed. Please check your credentials.');
+        setMessageType('error');
         console.error('Login error:', data.error || data.message);
       }
     } catch (error) {
       setMessage('Network error. Please try again later.');
+      setMessageType('error');
       console.error('Fetch error during login:', error);
     }
   };
@@ -126,7 +132,12 @@ const Login = () => {
               </Grid>
               <Grid item xs={12} sx={{ width: '100%' }}>
                 {message && (
-                  <Typography color="error" align="center" mt={1.5} sx={{ fontSize: '0.95rem' }}>
+                  <Typography 
+                    color={messageType === 'success' ? 'success' : 'error'} 
+                    align="center" 
+                    mt={1.5} 
+                    sx={{ fontSize: '0.95rem' }}
+                  >
                     {message}
                   </Typography>
                 )}

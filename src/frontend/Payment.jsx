@@ -47,12 +47,34 @@ const Payment = (props) => {
     updateTotal(updated);
 
     if (updated.length === 0) {
-        navigate('/prod'); // Redirect to Products.jsx
+        navigate('/prod'); 
     }
 };
 
 
     const navigate = useNavigate();
+
+    // Add this function to handle order submission
+    const handlePayNow = async () => {
+        try {
+            const orderData = {
+                items: cartItems,
+                total: total
+            };
+            const res = await fetch('http://localhost:3000/api/orders', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(orderData)
+            });
+            if (res.ok) {
+                navigate('/payment-success');
+            } else {
+                alert('Failed to place order.');
+            }
+        } catch (err) {
+            alert('Error placing order.');
+        }
+    };
 
     return (
         <Box
@@ -120,7 +142,7 @@ const Payment = (props) => {
                                 size="large"
                                 sx={{ mt: 3, py: 1.5, fontWeight: 600, fontSize: '1.1rem', borderRadius: 2 }}
                                 disabled={cartItems.length === 0}
-                                href='/payment-success'
+                                onClick={handlePayNow}
                             >
                                 Pay Now
                             </Button>

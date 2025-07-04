@@ -5,7 +5,9 @@ const Order = require('../models/Order'); // Import your Order model
 // GET all orders
 router.get('/', async (req, res) => {
     try {
-        const orders = await Order.find({}); // Fetch all orders from the database
+        const orders = await Order.find({}); 
+        console.log(orders);
+        // Fetch all orders from the database
         res.status(200).json(orders);
     } catch (err) {
         console.error('Error fetching orders:', err);
@@ -16,16 +18,15 @@ router.get('/', async (req, res) => {
 // You can add more routes here, e.g., to create an order, get a single order, update, or delete.
 // Example: Route to create a new order (when someone purchases)
 router.post('/', async (req, res) => {
-    const { email, items, total } = req.body;
+    const { items, total } = req.body;
 
     // Basic validation
-    if (!email || !items || !total) {
+    if (!items || !total) {
         return res.status(400).json({ message: 'Missing required order details.' });
     }
 
     try {
         const newOrder = new Order({
-            email,
             items,
             total,
         });
