@@ -23,7 +23,6 @@ import TextField from '@mui/material/TextField';
 import EditProductModal from './components/EditProductModal'; 
 
 
-// Orders Grid Component
 const OrdersGrid = () => {
     const [orders, setOrders] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
@@ -32,11 +31,11 @@ const OrdersGrid = () => {
     const [hasMore, setHasMore] = React.useState(true);
     const itemsPerPage = 20;
 
-    // State for View Details Modal
+    
     const [selectedOrder, setSelectedOrder] = React.useState(null);
     const [openDetailsModal, setOpenDetailsModal] = React.useState(false);
 
-    // State for Update Status Modal
+    
     const [orderToUpdate, setOrderToUpdate] = React.useState(null);
     const [openStatusModal, setOpenStatusModal] = React.useState(false);
     const [newStatus, setNewStatus] = React.useState('');
@@ -121,7 +120,7 @@ const OrdersGrid = () => {
 
     const handleUpdateStatusClick = (order) => {
         setOrderToUpdate(order);
-        setNewStatus(order.status); // Pre-fill with current status
+        setNewStatus(order.status); 
         setOpenStatusModal(true);
     };
 
@@ -144,7 +143,7 @@ const OrdersGrid = () => {
                 throw new Error('Failed to update order status');
             }
 
-            // Update the order in the local state
+            
             setOrders(prevOrders =>
                 prevOrders.map(order =>
                     order.id === orderToUpdate.id ? { ...order, status: newStatus } : order
@@ -341,7 +340,7 @@ const OrdersGrid = () => {
                 </>
             )}
 
-            {/* Order Details Dialog */}
+            
             <Dialog open={openDetailsModal} onClose={() => setOpenDetailsModal(false)}>
                 <DialogTitle sx={{ color: 'black' }}>Order Details: {selectedOrder?.orderNumber}</DialogTitle>
                 <DialogContent dividers sx={{ color: 'black' }}>
@@ -397,7 +396,7 @@ const OrdersGrid = () => {
                 </DialogActions>
             </Dialog>
 
-            {/* Update Status Dialog */}
+            
             <Dialog open={openStatusModal} onClose={() => setOpenStatusModal(false)}>
                 <DialogTitle sx={{ color: 'black' }}>Update Status for {orderToUpdate?.orderNumber}</DialogTitle>
                 <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
@@ -426,7 +425,7 @@ const OrdersGrid = () => {
     );
 };
 
-// Products Grid Component
+
 const ProductsGrid = () => {
     const [products, setProducts] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
@@ -478,7 +477,7 @@ const [newProduct, setNewProduct] = React.useState({
 
             if (!response.ok) throw new Error('Failed to delete');
 
-            // Remove from state
+            
             setProducts(prev => prev.filter(product => product.id !== productId));
         } catch (error) {
             alert(`Delete failed: ${error.message}`);
@@ -522,13 +521,13 @@ const [newProduct, setNewProduct] = React.useState({
             setLoading(true);
             setError(null);
             
-            // Create a timeout to prevent long loading
+            
             const timeoutId = setTimeout(() => {
                 setError('Request timeout. Please try again.');
                 setLoading(false);
-            }, 10000); // 10 second timeout
+            }, 10000); 
 
-            // Use the same API endpoint as the Products page
+           
             const response = await fetch('http://localhost:3001/products');
             
             clearTimeout(timeoutId);

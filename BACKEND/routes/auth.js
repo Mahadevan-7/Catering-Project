@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User'); 
 
-// Middleware to authenticate JWT
+
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
@@ -18,7 +18,7 @@ function authenticateToken(req, res, next) {
     });
 }
 
-// POST /api/auth/register
+
 router.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -42,7 +42,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// POST /api/auth/login
+
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 

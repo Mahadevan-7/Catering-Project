@@ -7,15 +7,14 @@ import GoogleIcon from '@mui/icons-material/Google';
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
-  // State for form inputs
+  
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [reEnterPassword, setReEnterPassword] = useState('');
-  // State for displaying messages to the user
   const [message, setMessage] = useState('');
-  // Hook for programmatic navigation
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,13 +23,13 @@ const Register = () => {
     }
   }, [navigate]);
 
-  // Handle form submission for registration
+  
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default browser form submission
+    e.preventDefault(); 
 
-    setMessage(''); // Clear any previous messages
+    setMessage(''); 
 
-    // Client-side password confirmation check
+    
     if (password !== reEnterPassword) {
       setMessage('Passwords do not match!');
       return;
@@ -43,23 +42,23 @@ const Register = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: `${firstName} ${lastName}`, // Combine first and last name
+          name: `${firstName} ${lastName}`,
           email,
           password,
         }),
       });
 
-      const data = await response.json(); // Parse the JSON response from the backend
+      const data = await response.json(); 
 
-      if (response.ok) { // If the response status is in the 2xx range (e.g., 201 Created)
+      if (response.ok) { 
         setMessage(data.message || 'Registration successful!');
-        // Redirect the user to the login page after successful registration
-        navigate('/log'); // Navigating to /log (login page)
-      } else { // If the response status is an error (e.g., 409 Conflict, 400 Bad Request)
+        
+        navigate('/log'); 
+      } else { 
         setMessage(data.message || 'Registration failed. Please try again.');
         console.error('Registration error:', data.message);
       }
-    } catch (error) { // Catch network errors or other exceptions
+    } catch (error) { 
       setMessage('Network error. Please try again later.');
       console.error('Fetch error during registration:', error);
     }
@@ -94,7 +93,7 @@ const Register = () => {
           justifyContent: 'center'
         }}>
           <Typography variant="h5" fontWeight={700} mb={2} align="center" sx={{ fontSize: '1.6rem' }}>Sign Up</Typography>
-          <form onSubmit={handleSubmit}> {/* ADDED onSubmit handler */}
+          <form onSubmit={handleSubmit}>
             <Grid container spacing={1.5} direction="column" alignItems="center" justifyContent="center">
               <Grid item xs={12} sx={{ width: '100%' }}>
                 <Box display="flex" gap={1.5} sx={{ flexDirection: { xs: 'column', sm: 'row' } }}>
@@ -106,8 +105,8 @@ const Register = () => {
                     size="small"
                     InputLabelProps={{ style: { fontSize: '0.95rem' } }}
                     inputProps={{ style: { fontSize: '0.95rem' } }}
-                    value={firstName} // CONNECTED TO STATE
-                    onChange={(e) => setFirstName(e.target.value)} // UPDATES STATE
+                    value={firstName} 
+                    onChange={(e) => setFirstName(e.target.value)} 
                   />
                   <TextField
                     label="Last Name"
@@ -117,8 +116,8 @@ const Register = () => {
                     size="small"
                     InputLabelProps={{ style: { fontSize: '0.95rem' } }}
                     inputProps={{ style: { fontSize: '0.95rem' } }}
-                    value={lastName} // CONNECTED TO STATE
-                    onChange={(e) => setLastName(e.target.value)} // UPDATES STATE
+                    value={lastName} 
+                    onChange={(e) => setLastName(e.target.value)} 
                   />
                 </Box>
               </Grid>
@@ -132,8 +131,8 @@ const Register = () => {
                   size="small"
                   InputLabelProps={{ style: { fontSize: '0.95rem' } }}
                   inputProps={{ style: { fontSize: '0.95rem' } }}
-                  value={email} // CONNECTED TO STATE
-                  onChange={(e) => setEmail(e.target.value)} // UPDATES STATE
+                  value={email} 
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sx={{ width: '100%' }}>
@@ -147,8 +146,8 @@ const Register = () => {
                     size="small"
                     InputLabelProps={{ style: { fontSize: '0.95rem' } }}
                     inputProps={{ style: { fontSize: '0.95rem' } }}
-                    value={password} // CONNECTED TO STATE
-                    onChange={(e) => setPassword(e.target.value)} // UPDATES STATE
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                   <TextField
                     label="Re-enter Password"
@@ -159,8 +158,8 @@ const Register = () => {
                     size="small"
                     InputLabelProps={{ style: { fontSize: '0.95rem' } }}
                     inputProps={{ style: { fontSize: '0.95rem' } }}
-                    value={reEnterPassword} // CONNECTED TO STATE
-                    onChange={(e) => setReEnterPassword(e.target.value)} // UPDATES STATE
+                    value={reEnterPassword} 
+                    onChange={(e) => setReEnterPassword(e.target.value)} 
                   />
                 </Box>
               </Grid>

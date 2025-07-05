@@ -60,13 +60,12 @@
   z-index: -1;
 }
 
-/* Ensure content is above the pseudo-elements */
 .glass-morphism-card > * {
   position: relative;
   z-index: 1;
 }
 
-/* Responsive design */
+
 @media (max-width: 768px) {
   .dashboard-container {
     width: 90vw;
@@ -84,7 +83,7 @@
   }
 }
 
-/* Animation for subtle glow effect */
+
 @keyframes glassGlow {
   0%, 100% {
     box-shadow: 

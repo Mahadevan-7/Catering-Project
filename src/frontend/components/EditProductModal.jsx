@@ -77,7 +77,7 @@ const EditProductModal = ({ open, handleClose, product, onSave }) => {
     </Dialog>
   );
 };
-// Example modal style, adjust as needed
+
 const modalStyle = {
   position: 'absolute',
   top: '50%',

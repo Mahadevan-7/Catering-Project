@@ -17,9 +17,7 @@
   background-attachment: fixed;
   background-size: cover;
 
-  /* /////////// */
-  /* color: #646cff; */
-  /* background-color: #ffffff; */
+  
 
 }
 
@@ -102,7 +100,7 @@ button:focus-visible {
 
 
 
-/* When hovering .Nav-head OR the span inside it */
+
 /* .Nav-head:hover,
 .Nav-head:hover span,
 .Nav-head span:hover,
@@ -185,7 +183,7 @@ button:focus-visible {
 }
 
 
-/* ////////// */
+
 
 
 .slogan-animate {
@@ -202,14 +200,13 @@ button:focus-visible {
 }
 
 
-/* ////////// */
 
 .Add-cart-but button:hover {
   color: #ffe082;
   transition: .3s;
 }
 
-/* Enhanced Cart Button Hover Effects */
+
 .floating-cart-button {
   transition: all 0.3s ease !important;
 }

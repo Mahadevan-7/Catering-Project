@@ -7,7 +7,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  const [messageType, setMessageType] = useState(''); // 'success' or 'error'
+  const [messageType, setMessageType] = useState(''); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,13 +22,13 @@ const Login = () => {
     setMessage('');
     setMessageType('');
 
-    // Check for admin credentials
+    
     if (email === 'admin@catering.com' && password === 'vmcj') {
       setMessage('Admin login successful!');
       setMessageType('success');
       sessionStorage.setItem('token', 'admin-token');
       sessionStorage.setItem('userRole', 'admin');
-      window.location.href = '/dash'; // Force reload to dashboard
+      window.location.href = '/dash'; 
       return;
     }
 
@@ -48,7 +48,7 @@ const Login = () => {
         setMessageType('success');
         sessionStorage.setItem('token', data.token);
         sessionStorage.setItem('userRole', 'user');
-        window.location.href = '/'; // Force reload to home
+        window.location.href = '/'; 
       } else {
         setMessage(data.error || data.message || 'Login failed. Please check your credentials.');
         setMessageType('error');
@@ -89,7 +89,7 @@ const Login = () => {
           justifyContent: 'center'
         }}>
           <Typography variant="h5" fontWeight={700} mb={2} align="center" sx={{ fontSize: '1.6rem' }}>Sign In</Typography>
-          <form onSubmit={handleSubmit}> {/* ADDED onSubmit handler */}
+          <form onSubmit={handleSubmit}> 
             <Grid container spacing={1.5} direction="column" alignItems="center" justifyContent="center">
               <Grid item xs={12} sx={{ width: { xs: '100%', sm: '80%' } }}>
                 <TextField
@@ -115,8 +115,8 @@ const Login = () => {
                   size="small"
                   InputLabelProps={{ style: { fontSize: '0.95rem' } }}
                   inputProps={{ style: { fontSize: '0.95rem' } }}
-                  value={password} // CONNECTED TO STATE
-                  onChange={(e) => setPassword(e.target.value)} // UPDATES STATE
+                  value={password} 
+                  onChange={(e) => setPassword(e.target.value)} 
                 />
               </Grid>
               <Grid item xs={12} sx={{ width: { xs: '100%', sm: '80%' } }}>

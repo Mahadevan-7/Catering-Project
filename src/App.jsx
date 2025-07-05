@@ -16,17 +16,17 @@ import { Dashboard } from './frontend/Dashboard'
 
 
 const PrivateRoute = ({ children }) => {
-  const isAuthenticated = sessionStorage.getItem('token'); // Check for JWT
-  // If authenticated, render the children component; otherwise, redirect to login
-  return isAuthenticated ? children : <Navigate to="/log" replace />; // 'replace' prevents going back to the protected route via browser back button
+  const isAuthenticated = sessionStorage.getItem('token');
+  
+  return isAuthenticated ? children : <Navigate to="/log" replace />; 
 };
 function App() {
-  // const [count, setCount] = useState(0)
+  
 
   return (
   <BrowserRouter>
     <>
-      {/* <Home></Home> */}
+      
       </>
    <Navbar />
       <Routes>

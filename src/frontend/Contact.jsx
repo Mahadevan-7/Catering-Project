@@ -42,17 +42,17 @@ const Contact = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Here you would typically send the form data to your backend
+        
         console.log('Form submitted:', formData);
         
-        // Show success message
+       
         setSnackbar({
             open: true,
             message: 'Thank you for your message! We will get back to you soon.',
             severity: 'success'
         });
 
-        // Reset form
+        
         setFormData({
             name: '',
             email: '',

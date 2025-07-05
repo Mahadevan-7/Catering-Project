@@ -94,7 +94,7 @@ const Navbar = () => {
         </Box>
     );
 
-    // After successful login, force a reload to update the navbar
+    
     const handleLoginSuccess = () => {
         setIsAuthenticated(true);
         window.location.reload();
@@ -113,7 +113,7 @@ const Navbar = () => {
                     </div>
                     <Box sx={{ flexGrow: 1 }} />
 
-                    {/* Desktop Navigation */}
+                    
                     <Box sx={{ display: { xs: 'none', md: 'flex' }, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                         <Button
                             variant={scrolled ? 'contained' : 'outlined'}
@@ -192,7 +192,7 @@ const Navbar = () => {
                         </Button>
                     </Box>
 
-                    {/* Mobile Hamburger Menu */}
+                    
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -205,13 +205,13 @@ const Navbar = () => {
                 </Toolbar>
             </AppBar>
 
-            {/* Mobile Drawer */}
+            
             <Drawer
                 variant="temporary"
                 open={mobileOpen}
                 onClose={handleDrawerToggle}
                 ModalProps={{
-                    keepMounted: true, // Better open performance on mobile.
+                    keepMounted: true, 
                 }}
                 sx={{
                     display: { xs: 'block', md: 'none' },
@@ -226,7 +226,7 @@ const Navbar = () => {
                 {drawer}
             </Drawer>
 
-            <div style={{ height: 64 }} /> {/* Spacer for fixed navbar */}
+            <div style={{ height: 64 }} /> 
         </div>
     );
 };

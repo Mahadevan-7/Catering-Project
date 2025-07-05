@@ -1,4 +1,4 @@
-import { Button, Grid, IconButton, Card, CardContent, Typography, Divider, Box } from '@mui/material';
+import { Button, Grid, IconButton, Card, CardContent, Typography, Divider, Box, Dialog, DialogTitle, DialogContent, DialogActions, TextField, MenuItem } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
@@ -13,6 +13,16 @@ const Payment = (props) => {
 
     const [cartItems, setCartItems] = useState([]);
     const [total, setTotal] = useState(t);
+    const [customerDialogOpen, setCustomerDialogOpen] = useState(false);
+    const [customerInfo, setCustomerInfo] = useState({
+        customerName: '',
+        email: '',
+        phone: '',
+        address: '',
+        eventType: 'General'
+    });
+
+    const eventTypes = ['Wedding', 'Birthday', 'Corporate', 'Anniversary', 'General'];
 
     useEffect(() => {
         console.log("ok");
@@ -42,37 +52,68 @@ const Payment = (props) => {
     };
 
     const handleDelete = (index) => {
-    const updated = cartItems.filter((_, i) => i !== index);
-    setCartItems(updated);
-    updateTotal(updated);
+        const updated = cartItems.filter((_, i) => i !== index);
+        setCartItems(updated);
+        updateTotal(updated);
 
-    if (updated.length === 0) {
-        navigate('/prod'); 
-    }
-};
-
+        if (updated.length === 0) {
+            navigate('/prod'); 
+        }
+    };
 
     const navigate = useNavigate();
 
-    // Add this function to handle order submission
-    const handlePayNow = async () => {
+    
+    const handlePayNow = () => {
+        setCustomerDialogOpen(true);
+    };
+
+    
+    const handleCustomerInfoSubmit = async () => {
+        if (!customerInfo.customerName || !customerInfo.email) {
+            alert('Please fill in customer name and email');
+            return;
+        }
+
         try {
             const orderData = {
+                email: customerInfo.email,
+                customerName: customerInfo.customerName,
+                phone: customerInfo.phone ? Number(customerInfo.phone) : undefined,
+                address: customerInfo.address || '',
                 items: cartItems,
-                total: total
+                total: Number(total),
+                status: 'Pending',
+                eventType: customerInfo.eventType
             };
-            const res = await fetch('http://localhost:3000/api/orders', {
+
+            const response = await fetch('http://localhost:3000/api/orders', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(orderData)
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(orderData),
             });
-            if (res.ok) {
-                navigate('/payment-success');
+
+            if (!response.ok) {
+                console.error('Failed to create order');
+                alert('Failed to place order. Please try again.');
             } else {
-                alert('Failed to place order.');
+                console.log('Order created successfully');
+                
+                setCustomerInfo({
+                    customerName: '',
+                    email: '',
+                    phone: '',
+                    address: '',
+                    eventType: 'General'
+                });
+                setCustomerDialogOpen(false);
+                navigate('/payment-success');
             }
-        } catch (err) {
-            alert('Error placing order.');
+        } catch (error) {
+            console.error('Error creating order:', error);
+            alert('Error placing order. Please try again.');
         }
     };
 
@@ -150,6 +191,70 @@ const Payment = (props) => {
                     </Card>
                 </Grid>
             </Grid>
+
+            
+            <Dialog open={customerDialogOpen} onClose={() => setCustomerDialogOpen(false)} maxWidth="sm" fullWidth>
+                <DialogTitle>Customer Information</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        label="Customer Name *"
+                        fullWidth
+                        margin="normal"
+                        value={customerInfo.customerName}
+                        onChange={(e) => setCustomerInfo({...customerInfo, customerName: e.target.value})}
+                        required
+                    />
+                    <TextField
+                        label="Email *"
+                        type="email"
+                        fullWidth
+                        margin="normal"
+                        value={customerInfo.email}
+                        onChange={(e) => setCustomerInfo({...customerInfo, email: e.target.value})}
+                        required
+                    />
+                    <TextField
+                        label="Phone"
+                        type="tel"
+                        fullWidth
+                        margin="normal"
+                        value={customerInfo.phone}
+                        onChange={(e) => {
+                            const value = e.target.value.replace(/[^0-9]/g, '');
+                            setCustomerInfo({...customerInfo, phone: value});
+                        }}
+                        inputProps={{
+                            pattern: "[0-9]*",
+                            inputMode: "numeric"
+                        }}
+                    />
+                    <TextField
+                        label="Address"
+                        fullWidth
+                        margin="normal"
+                        multiline
+                        rows={3}
+                        value={customerInfo.address}
+                        onChange={(e) => setCustomerInfo({...customerInfo, address: e.target.value})}
+                    />
+                    <TextField
+                        select
+                        label="Event Type"
+                        fullWidth
+                        margin="normal"
+                        value={customerInfo.eventType}
+                        onChange={(e) => setCustomerInfo({...customerInfo, eventType: e.target.value})}
+                    >
+                        {eventTypes.map((type) => (
+                            <MenuItem key={type} value={type}>{type}</MenuItem>
+                        ))}
+                    </TextField>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setCustomerDialogOpen(false)}>Cancel</Button>
+                    <Button onClick={handleCustomerInfoSubmit} variant="contained">Place Order</Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };

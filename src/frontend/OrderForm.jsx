@@ -32,7 +32,7 @@ const OrderForm = ({ onOrderCreated }) => {
 
     if (res.ok) {
       const created = await res.json();
-      onOrderCreated?.(created); // optional callback to refresh dashboard
+      onOrderCreated?.(created); 
       alert("Order placed successfully!");
       setForm({ customerName: '', orderDate: '', itemCount: 1, totalAmount: '', eventType: 'Wedding', status: 'Pending' });
     } else {

@@ -1,24 +1,23 @@
 
-require('dotenv').config(); // Load environment variables from .env file
+require('dotenv').config(); 
 
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 3000; // Define your server port
+const PORT = process.env.PORT || 3000; 
 
-// Middleware
-app.use(cors()); // Enable CORS for all origins (adjust for production)
-app.use(express.json()); // Body parser for JSON requests
 
-// API Routes
-// Make sure these paths match your frontend API calls
+app.use(cors()); 
+app.use(express.json()); 
+
+
 app.use('/api/auth', require('./routes/auth'));
-app.use('/api/products', require('./routes/products')); // Uncomment or add if you use product routes
-app.use('/api/orders', require('./routes/orders'));     // Uncomment or add if you use order routes
+app.use('/api/products', require('./routes/products')); 
+app.use('/api/orders', require('./routes/orders'));     
 
-// Connect to MongoDB and Start Server
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('MongoDB connected successfully!');

@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const Order = require('../models/Order'); // Import your Order model
+const Order = require('../models/Order'); 
 
-// GET all orders
 router.get('/', async (req, res) => {
     try {
         const orders = await Order.find({}); 
         console.log(orders);
-        // Fetch all orders from the database
+        
         res.status(200).json(orders);
     } catch (err) {
         console.error('Error fetching orders:', err);
@@ -15,22 +14,25 @@ router.get('/', async (req, res) => {
     }
 });
 
-// You can add more routes here, e.g., to create an order, get a single order, update, or delete.
-// Example: Route to create a new order (when someone purchases)
-router.post('/', async (req, res) => {
-    const { items, total, status, eventType } = req.body;
 
-    // Basic validation
-    if (!items || !total) {
-        return res.status(400).json({ message: 'Missing required order details.' });
+router.post('/', async (req, res) => {
+    const { email, customerName, phone, address, items, total, status, eventType } = req.body;
+
+   
+    if (!email || !customerName || !items || !total) {
+        return res.status(400).json({ message: 'Missing required order details (email, customerName, items, total).' });
     }
 
     try {
         const newOrder = new Order({
+            email,
+            customerName,
+            phone: phone ? Number(phone) : undefined,
+            address: address || '',
             items,
-            total,
-            status,
-            eventType
+            total: Number(total),
+            status: status || 'Pending',
+            eventType: eventType || 'General'
         });
 
         await newOrder.save();
@@ -41,7 +43,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-// PUT route to update an order by ID (admin only)
+
 router.put('/:id', async (req, res) => {
     try {
         const orderId = req.params.id;

@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import Button from '@mui/material/Button';
 
 const Cart = ({ cart, setCart, total, setTotal, onClose }) => {
-    // Count quantities of each item
+    
     const items = cart;
     const navigate = useNavigate()
 
