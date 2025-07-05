@@ -20,7 +20,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import TextField from '@mui/material/TextField';
-import EditProductModal from './components/EditProductModal';
+import EditProductModal from './components/EditProductModal'; 
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
@@ -315,20 +315,20 @@ const OrdersGrid = () => {
                     >
                         {showFilters ? 'Hide Filters' : 'Show Filters'}
                     </Button>
-                    <Button
-                        variant="outlined"
-                        onClick={fetchOrders}
-                        sx={{
-                            color: 'rgba(255, 255, 255, 0.8)',
-                            borderColor: 'rgba(255, 255, 255, 0.3)',
-                            '&:hover': {
-                                borderColor: 'rgba(255, 255, 255, 0.6)',
-                                backgroundColor: 'rgba(255, 255, 255, 0.1)'
-                            }
-                        }}
-                    >
-                        Refresh
-                    </Button>
+                <Button
+                    variant="outlined"
+                    onClick={fetchOrders}
+                    sx={{
+                        color: 'rgba(255, 255, 255, 0.8)',
+                        borderColor: 'rgba(255, 255, 255, 0.3)',
+                        '&:hover': {
+                            borderColor: 'rgba(255, 255, 255, 0.6)',
+                            backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }}
+                >
+                    Refresh
+                </Button>
                 </Box>
             </Box>
 

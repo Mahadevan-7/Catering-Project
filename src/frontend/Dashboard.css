@@ -102,13 +102,13 @@
   animation: glassGlow 4s ease-in-out infinite;
 } 
 
-.add-product-buttons-cancel:hover{
+.add-product-buttons-cancel:hover,.edit-product-buttons-cancel:hover{
   transform: scale(.97);
   transition: .5s ease-in-out;
   background-color: black;
 }
 
-.add-product-buttons-add:hover{
+.add-product-buttons-add:hover,.edit-product-buttons-save:hover{
   transform: scale(.97);
   transition: .5s ease-in-out;
 }

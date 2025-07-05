@@ -71,8 +71,8 @@ const EditProductModal = ({ open, handleClose, product, onSave }) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button variant="contained" onClick={handleSubmit}>Save</Button>
+        <Button className='edit-product-buttons-cancel' onClick={handleClose}>Cancel</Button>
+        <Button className='edit-product-buttons-save' variant="contained" onClick={handleSubmit}>Save</Button>
       </DialogActions>
     </Dialog>
   );
