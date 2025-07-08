@@ -21,6 +21,15 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import TextField from '@mui/material/TextField';
 import EditProductModal from './components/EditProductModal'; 
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import ClearIcon from '@mui/icons-material/Clear';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import SortIcon from '@mui/icons-material/Sort'; 
 
 
 const OrdersGrid = () => {
@@ -30,6 +39,14 @@ const OrdersGrid = () => {
     const [page, setPage] = React.useState(1);
     const [hasMore, setHasMore] = React.useState(true);
     const itemsPerPage = 20;
+
+    // Filter and sort states
+    const [searchTerm, setSearchTerm] = React.useState('');
+    const [statusFilter, setStatusFilter] = React.useState('all');
+    const [eventTypeFilter, setEventTypeFilter] = React.useState('all');
+    const [sortBy, setSortBy] = React.useState('orderDate');
+    const [sortOrder, setSortOrder] = React.useState('desc');
+    const [showFilters, setShowFilters] = React.useState(false);
 
     
     const [selectedOrder, setSelectedOrder] = React.useState(null);
@@ -43,6 +60,11 @@ const OrdersGrid = () => {
     React.useEffect(() => {
         fetchOrders();
     }, []);
+
+    // Reset page when filters change
+    React.useEffect(() => {
+        setPage(1);
+    }, [searchTerm, statusFilter, eventTypeFilter, sortBy, sortOrder]);
 
     const fetchOrders = async () => {
         try {
@@ -102,9 +124,87 @@ const OrdersGrid = () => {
                 return 'default';
         }
     };
+
+    // Filter and sort functions
+    const getFilteredAndSortedOrders = () => {
+        let filteredOrders = [...orders];
+
+        // Apply search filter
+        if (searchTerm) {
+            filteredOrders = filteredOrders.filter(order =>
+                order.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                order.phone.includes(searchTerm) ||
+                order.email.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+
+        // Apply status filter
+        if (statusFilter !== 'all') {
+            filteredOrders = filteredOrders.filter(order =>
+                order.status.toLowerCase() === statusFilter.toLowerCase()
+            );
+        }
+
+        // Apply event type filter
+        if (eventTypeFilter !== 'all') {
+            filteredOrders = filteredOrders.filter(order =>
+                order.eventType.toLowerCase() === eventTypeFilter.toLowerCase()
+            );
+        }
+
+        // Apply sorting
+        filteredOrders.sort((a, b) => {
+            let aValue, bValue;
+
+            switch (sortBy) {
+                case 'orderDate':
+                    aValue = new Date(a.orderDate);
+                    bValue = new Date(b.orderDate);
+                    break;
+                case 'customerName':
+                    aValue = a.customerName.toLowerCase();
+                    bValue = b.customerName.toLowerCase();
+                    break;
+                case 'totalAmount':
+                    aValue = parseFloat(a.totalAmount);
+                    bValue = parseFloat(b.totalAmount);
+                    break;
+                case 'status':
+                    aValue = a.status.toLowerCase();
+                    bValue = b.status.toLowerCase();
+                    break;
+                default:
+                    aValue = a[sortBy];
+                    bValue = b[sortBy];
+            }
+
+            if (sortOrder === 'asc') {
+                return aValue > bValue ? 1 : -1;
+            } else {
+                return aValue < bValue ? 1 : -1;
+            }
+        });
+
+        return filteredOrders;
+    };
+
+    const clearFilters = () => {
+        setSearchTerm('');
+        setStatusFilter('all');
+        setEventTypeFilter('all');
+        setSortBy('orderDate');
+        setSortOrder('desc');
+    };
+
+    const getUniqueEventTypes = () => {
+        const eventTypes = orders.map(order => order.eventType);
+        return [...new Set(eventTypes)].filter(type => type && type !== 'General');
+    };
     const getPaginatedOrders = () => {
+        const filteredOrders = getFilteredAndSortedOrders();
         const startIndex = (page - 1) * itemsPerPage;
-        return orders.slice(startIndex, startIndex + itemsPerPage);
+        return filteredOrders.slice(startIndex, startIndex + itemsPerPage);
     };
 
     const handleLoadMore = () => {
@@ -197,8 +297,24 @@ const OrdersGrid = () => {
         <Box sx={{ flexGrow: 1 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
                 <Typography variant="h5" sx={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: 600 }}>
-                    Orders ({orders.length})
+                    Orders ({getFilteredAndSortedOrders().length})
                 </Typography>
+                <Box sx={{ display: 'flex', gap: 2 }}>
+                    <Button
+                        variant="outlined"
+                        startIcon={<FilterListIcon />}
+                        onClick={() => setShowFilters(!showFilters)}
+                        sx={{
+                            color: 'rgba(255, 255, 255, 0.8)',
+                            borderColor: 'rgba(255, 255, 255, 0.3)',
+                            '&:hover': {
+                                borderColor: 'rgba(255, 255, 255, 0.6)',
+                                backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }}
+                    >
+                        {showFilters ? 'Hide Filters' : 'Show Filters'}
+                    </Button>
                 <Button
                     variant="outlined"
                     onClick={fetchOrders}
@@ -213,12 +329,241 @@ const OrdersGrid = () => {
                 >
                     Refresh
                 </Button>
+                </Box>
             </Box>
 
-            {orders.length === 0 ? (
+            {/* Filter and Sort Controls */}
+            {showFilters && (
+                <Box sx={{ 
+                    mb: 3, 
+                    p: 3, 
+                    background: 'rgba(255, 255, 255, 0.05)', 
+                    borderRadius: 2,
+                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                        <Typography variant="h6" sx={{ color: 'rgba(255, 255, 255, 0.9)', display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <FilterListIcon /> Filters & Sorting
+                        </Typography>
+                        <Button
+                            size="small"
+                            onClick={clearFilters}
+                            sx={{
+                                color: 'rgba(255, 255, 255, 0.7)',
+                                '&:hover': {
+                                    backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            }}
+                        >
+                            Clear All
+                        </Button>
+                    </Box>
+
+                    {/* Active Filters Summary */}
+                    {(searchTerm || statusFilter !== 'all' || eventTypeFilter !== 'all') && (
+                        <Box sx={{ mb: 2, display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                            {searchTerm && (
+                                <Chip
+                                    label={`Search: "${searchTerm}"`}
+                                    onDelete={() => setSearchTerm('')}
+                                    size="small"
+                                    sx={{
+                                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                        color: 'rgba(255, 255, 255, 0.9)',
+                                        '& .MuiChip-deleteIcon': {
+                                            color: 'rgba(255, 255, 255, 0.7)'
+                                        }
+                                    }}
+                                />
+                            )}
+                            {statusFilter !== 'all' && (
+                                <Chip
+                                    label={`Status: ${statusFilter}`}
+                                    onDelete={() => setStatusFilter('all')}
+                                    size="small"
+                                    sx={{
+                                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                        color: 'rgba(255, 255, 255, 0.9)',
+                                        '& .MuiChip-deleteIcon': {
+                                            color: 'rgba(255, 255, 255, 0.7)'
+                                        }
+                                    }}
+                                />
+                            )}
+                            {eventTypeFilter !== 'all' && (
+                                <Chip
+                                    label={`Event: ${eventTypeFilter}`}
+                                    onDelete={() => setEventTypeFilter('all')}
+                                    size="small"
+                                    sx={{
+                                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                        color: 'rgba(255, 255, 255, 0.9)',
+                                        '& .MuiChip-deleteIcon': {
+                                            color: 'rgba(255, 255, 255, 0.7)'
+                                        }
+                                    }}
+                                />
+                            )}
+                        </Box>
+                    )}
+                    
+                    <Grid container spacing={3}>
+                        {/* Search */}
+                        <Grid item xs={12} md={4}>
+                            <TextField
+                                fullWidth
+                                label="Search Orders"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                placeholder="Search by customer, order number, phone, or email"
+                                InputProps={{
+                                    endAdornment: searchTerm && (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                onClick={() => setSearchTerm('')}
+                                                edge="end"
+                                                sx={{ color: 'rgba(255, 255, 255, 0.7)' }}
+                                            >
+                                                <ClearIcon />
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                    sx: {
+                                        color: 'rgba(255, 255, 255, 0.9)',
+                                        '& .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: 'rgba(255, 255, 255, 0.3)'
+                                        },
+                                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: 'rgba(255, 255, 255, 0.5)'
+                                        },
+                                        '& .MuiInputLabel-root': {
+                                            color: 'rgba(255, 255, 255, 0.7)'
+                                        }
+                                    }
+                                }}
+                            />
+                        </Grid>
+
+                        {/* Status Filter */}
+                        <Grid item xs={12} md={2}>
+                            <FormControl fullWidth>
+                                <InputLabel sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>Status</InputLabel>
+                                <Select
+                                    value={statusFilter}
+                                    onChange={(e) => setStatusFilter(e.target.value)}
+                                    sx={{
+                                        color: 'rgba(255, 255, 255, 0.9)',
+                                        '& .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: 'rgba(255, 255, 255, 0.3)'
+                                        },
+                                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: 'rgba(255, 255, 255, 0.5)'
+                                        },
+                                        '& .MuiSvgIcon-root': {
+                                            color: 'rgba(255, 255, 255, 0.7)'
+                                        }
+                                    }}
+                                >
+                                    <MenuItem value="all">All Status</MenuItem>
+                                    <MenuItem value="pending">Pending</MenuItem>
+                                    <MenuItem value="confirmed">Confirmed</MenuItem>
+                                    <MenuItem value="completed">Completed</MenuItem>
+                                    <MenuItem value="cancelled">Cancelled</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+
+                        {/* Event Type Filter */}
+                        <Grid item xs={12} md={2}>
+                            <FormControl fullWidth>
+                                <InputLabel sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>Event Type</InputLabel>
+                                <Select
+                                    value={eventTypeFilter}
+                                    onChange={(e) => setEventTypeFilter(e.target.value)}
+                                    sx={{
+                                        color: 'rgba(255, 255, 255, 0.9)',
+                                        '& .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: 'rgba(255, 255, 255, 0.3)'
+                                        },
+                                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: 'rgba(255, 255, 255, 0.5)'
+                                        },
+                                        '& .MuiSvgIcon-root': {
+                                            color: 'rgba(255, 255, 255, 0.7)'
+                                        }
+                                    }}
+                                >
+                                    <MenuItem value="all">All Events</MenuItem>
+                                    {getUniqueEventTypes().map((eventType) => (
+                                        <MenuItem key={eventType} value={eventType.toLowerCase()}>
+                                            {eventType}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+
+                        {/* Sort By */}
+                        <Grid item xs={12} md={2}>
+                            <FormControl fullWidth>
+                                <InputLabel sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>Sort By</InputLabel>
+                                <Select
+                                    value={sortBy}
+                                    onChange={(e) => setSortBy(e.target.value)}
+                                    sx={{
+                                        color: 'rgba(255, 255, 255, 0.9)',
+                                        '& .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: 'rgba(255, 255, 255, 0.3)'
+                                        },
+                                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: 'rgba(255, 255, 255, 0.5)'
+                                        },
+                                        '& .MuiSvgIcon-root': {
+                                            color: 'rgba(255, 255, 255, 0.7)'
+                                        }
+                                    }}
+                                >
+                                    <MenuItem value="orderDate">Order Date</MenuItem>
+                                    <MenuItem value="customerName">Customer Name</MenuItem>
+                                    <MenuItem value="totalAmount">Total Amount</MenuItem>
+                                    <MenuItem value="status">Status</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+
+                        {/* Sort Order */}
+                        <Grid item xs={12} md={2}>
+                            <FormControl fullWidth>
+                                <InputLabel sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>Order</InputLabel>
+                                <Select
+                                    value={sortOrder}
+                                    onChange={(e) => setSortOrder(e.target.value)}
+                                    sx={{
+                                        color: 'rgba(255, 255, 255, 0.9)',
+                                        '& .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: 'rgba(255, 255, 255, 0.3)'
+                                        },
+                                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: 'rgba(255, 255, 255, 0.5)'
+                                        },
+                                        '& .MuiSvgIcon-root': {
+                                            color: 'rgba(255, 255, 255, 0.7)'
+                                        }
+                                    }}
+                                >
+                                    <MenuItem value="desc">Descending</MenuItem>
+                                    <MenuItem value="asc">Ascending</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                    </Grid>
+                </Box>
+            )}
+
+            {getFilteredAndSortedOrders().length === 0 ? (
                 <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
                     <Typography variant="h6" sx={{ color: 'rgba(255, 255, 255, 0.6)' }}>
-                        No orders found
+                        {orders.length === 0 ? 'No orders found' : 'No orders match your filters'}
                     </Typography>
                 </Box>
             ) : (
@@ -319,7 +664,7 @@ const OrdersGrid = () => {
                         ))}
                     </Grid>
 
-                    {hasMore && displayedOrders.length < orders.length && (
+                    {hasMore && displayedOrders.length < getFilteredAndSortedOrders().length && (
                         <Box display="flex" justifyContent="center" mt={3}>
                             <Button
                                 variant="outlined"
