@@ -40,26 +40,40 @@ const Contact = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        console.log('Form submitted:', formData);
-        
-       
-        setSnackbar({
-            open: true,
-            message: 'Thank you for your message! We will get back to you soon.',
-            severity: 'success'
-        });
-
-        
-        setFormData({
-            name: '',
-            email: '',
-            phone: '',
-            subject: '',
-            message: ''
-        });
+        try {
+            const res = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: formData.name,
+                    email: formData.email,
+                    message: formData.message
+                })
+            });
+            const data = await res.json();
+            setSnackbar({
+                open: true,
+                message: data.message || 'Thank you for your message! We will get back to you soon.',
+                severity: res.ok ? 'success' : 'error'
+            });
+            if (res.ok) {
+                setFormData({
+                    name: '',
+                    email: '',
+                    phone: '',
+                    subject: '',
+                    message: ''
+                });
+            }
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: 'Failed to send message. Please try again later.',
+                severity: 'error'
+            });
+        }
     };
 
     const handleCloseSnackbar = () => {
